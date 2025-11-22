@@ -30,7 +30,7 @@ If only we could get some help with this.
 * Specialized Agents: Create custom AI assistants tailored for specific workflows, domains, or security requirements, with configurable tools and resources.
 * Security Model: All commands that modify your system or AWS resources require your explicit approval before execution, giving you control while benefiting from AI assistance.
 
-![splash page for Kiro CLI](/images/kiro-cli-splash.png)
+![splash page for Kiro CLI](/images/kiro-splash.png)
 
 It is pretty awesome, and in this workshop you will get hands on with it so that you can learn the basics,  and give you the confidence so you can apply what you have learned to your every day activities.
 
