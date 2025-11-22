@@ -1,5 +1,13 @@
 ## Tracking changes with this workshop
 
+17th November 2025
+
+- v.2.0.0 of workshop
+- update workshop to reflect Kiro CLI is now Kiro CLI (complete refactor of this workshop with lots of breaking changes)
+- removed sections no longer relevant to Kiro
+
+
+
 22nd September 2025
 
 - update custom hooks to include new hooks available in v1.16.2 and revise/cleanup section
@@ -12,7 +20,7 @@
 - updated custom agent to include the new edit command
 - update to include AGENTS.md now default resource in context
 - update to remove stdio references as MCP support is now stdio and http
-- add details of the Amazon Q CLI chat history
+- add details of the Kiro CLI chat history
 - add updated to custom agent that allows you to define models to use with that custom agent
 
 
@@ -45,11 +53,11 @@
 
 11th August 2025
 
-This is a big refactor as there was significant changes to how Amazon Q CLI works. /hooks and /profiles are now gone, MCP Server configuration has changed.
+This is a big refactor as there was significant changes to how Kiro CLI works. /hooks and /profiles are now gone, MCP Server configuration has changed.
 
 - updated to reflect changes in Q CLI v1.13.1 and v1.13.2 - **big update**
 - deprecated /profile to /agent and updated content to reflect this change, including changes to context and how this is managed (significant change, removal of global context)
-- refactored tasks, including removing and adding based on updated Amazon Q CLI functionality
+- refactored tasks, including removing and adding based on updated Kiro CLI functionality
 - added a new image task
 - added new section on fine grain tool permissions
 
@@ -72,7 +80,7 @@ This is a big refactor as there was significant changes to how Amazon Q CLI work
 
 7th July 2025
 
-- updates based on Amazon Q CLI v1.12.3
+- updates based on Kiro CLI v1.12.3
 - update workshop references to /context hooks to /hooks
 - update /load and /save changes
 - add info on beta settings
@@ -90,7 +98,7 @@ This is a big refactor as there was significant changes to how Amazon Q CLI work
 - split out the main getting started lab into two sections, core and advanced
 - added a new section on prompt good practices
 - split out the setup section into basic and advanced
-- updated to include new features in Amazon Q CLI (subscribe and model)
+- updated to include new features in Kiro CLI (subscribe and model)
 
 19th May 2025
 
@@ -104,7 +112,7 @@ This is a big refactor as there was significant changes to how Amazon Q CLI work
 
 16th May 2025
 
-- updated workshop for Amazon Q CLI 1.10
+- updated workshop for Kiro CLI 1.10
 - add new section on managing conversations that includes --resume, /save and /load which were added in 1.10
 - added additional headings to cover topics to make it easier to find topics of interest
 - add additional info on q mcp command which allows you to manage your mcp.json file
