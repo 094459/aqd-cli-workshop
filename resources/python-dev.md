@@ -2,12 +2,13 @@
 
 - Use the following project structure
 
+```
 project/
 ├── src/
 ├── tests/
 ├── .env.example
 └── run.py (entry point)
-
+```
 
 ## Architecting guidelines
 
