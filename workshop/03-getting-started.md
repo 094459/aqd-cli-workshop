@@ -952,6 +952,24 @@ Which will start your Kiro CLI session with that custom agent. Now this might be
 
 ---
 
+#### Recovering for bad configuration changes
+
+Whilst you are editing the custom agent configuration files, you may make an error or mistake in your edits. When Kiro CLI saves custom agent configurations, it will check and let you know.
+
+Here is an example of one such error - when making a change, I had created a duplicate field.
+
+```
+Error: Json supplied at /{path}/.kiro/agents/python-dev.json is invalid: duplicate field `allowedTools` at line 24 column 16
+
+Failed to execute command: Post edit validation failed for agent 'python-dev'. Malformed config detected: Json supplied at /{path}/.kiro/agents/python-dev.json is invalid: duplicate field `allowedTools` at line 24 column 16
+
+Failed to execute command: duplicate field `allowedTools` at line 24 column 16
+```
+
+If you try and start Kiro CLI it will fail, so you will need to fix these issues by directly editing the custom agent configuration file. The path will be displayed in the error message, so use that to locate the file and then fix the issue.
+
+---
+
 #### Setting a default custom agent
 
 When you start your Kiro CLI session, it will start the session using the default custom agent. If you create a number of different custom agents, you may decided that you want to make that the default one so that you don't always have to start your Kiro CLI session using the "--agent {name}" command.

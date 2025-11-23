@@ -1,5 +1,10 @@
 ## Tracking changes with this workshop
 
+23rd November 2025
+
+- Sections 2,3, and 4 now completed
+- Sections 5,6 and 7 cleared out
+
 17th November 2025
 
 - v.2.0.0 of workshop

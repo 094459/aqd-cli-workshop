@@ -314,85 +314,193 @@ This is how I would configure this in the custom agent configuration file, in th
 
 Whilst the previous two agent hooks have focused on starting Kiro CLI or entering prompts, you can also configure hooks to work with tools. When you want to use the tool related hooks, there are additional configuration parameters you need to define.
 
-**"PreToolUse"** and "PostToolUse"** are used to configure hooks that run either before or after tools are run. You define these slightly different to the previous hooks. You will need to use **"matcher"** to tag the tool you want to assign the custom hook to. 
+**"PreToolUse"** and **"PostToolUse"** are used to configure hooks that run either before or after tools are run. You define these slightly different to the previous hooks. You use **"matcher"** to assign the hook to. When configuring matcher, you can configure it to select specific or a number of tools.
 
-In the following examples you can see that we are using this to tag on when the **execute_bash** and **fs_Write** tools are used. One audits what is being run, and the other runs the rustftm to ensure all files are formatted consistently.
+> **Note!** As Kiro CLI was previously Amazon Q CLI, some of the internals are still being updated. This means that whilst the tools we configured in earlier labs are correct, they map to other names:
+> * write -> fs_write
+> * read -> fs_read
+> * shell -> execute_bash
+> * aws -> use_aws
+>
+
+* "{tool}" - Exact match for a specific built in tools (for example, for "write" we would use "fs_write")
+* "@{mcp}" - The "@" matches all tools from a given MCP server (for example, "@git" would be all tools from the Git MCP Server)
+* "@{mcp}/{tool}" - Matches a specific tool from a MCP server (for example, "@git/status would match just the {status} tool from the @git MCP Server)
+* "*" - All tools (built-in and MCP)
+* "@builtin" - All built-in tools only
+* No matcher - Applies to all tools
+
+We will bring this to life by showing how we can we can extend our java-dev custom agent to illustrate this.
+
+---
+
+**Task-04**
+
+We are going to add some pre and post hooks for running specific tools. In your Kiro CLI session, edit the java-dev custom agent configuration using the following command:
 
 ```
-{
-  "$schema": "https://raw.githubusercontent.com/aws/amazon-q-developer-cli/refs/heads/main/schemas/agent-v1.json",
-  "name": "python-developer",
-  "description": "",
-  "prompt": null,
-  "mcpServers": {},
-  "tools": ["*"],
-  "toolAliases": {},
-  "allowedTools": ["fs_read","fs_write","use_aws"],
-  "resources": [
-    "file://.amazonq/rules/**/*.md"
-  ],
+/agent edit --name java-dev
+```
+
+We are going to run a command, and log these out to a file so you can see that it actually does something. We need to add the following to our custom agent configuration file:
+
+```
   "hooks": {
     "preToolUse": [
       {
         "matcher": "execute_bash",
-        "command": "{ echo \"$(date) - Bash command:\"; cat; echo; } >> /tmp/bash_audit_log"
+        "command": "echo \"Running pre tool command, for all built in tools\" >> /tmp/pre-tool.log"
       }
     ],
     "postToolUse": [
       {
         "matcher": "fs_write",
-        "command": "cargo fmt --all"
+        "command": "echo \"Running post tool command, only for write tool\" >> /tmp/post-tool.log"
       }
-    ] 
+    ]
   },
-  "toolsSettings": {}
+```
+
+When we run a shell command or write something to the file system, we will trigger a pre or post tool hook. We are directing the echo command to a file in /tmp/post-tool.log or /tmp/pre-tool.log which we will check to show that these have been triggered.
+
+Your completed configuration file should look like this:
+
+```
+{
+  "name": "java-dev",
+  "description": "A custom agent that provides Java Spring Boot developer guidance for using Spring Boot v3.x",
+  "prompt": "file://../shared/springboot.md",
+  "mcpServers": {},
+  "tools": [
+    "*"
+  ],
+  "toolAliases": {},
+  "allowedTools": [],
+  "resources": [
+    "file://AGENTS.md",
+    "file://README.md"
+  ],
+    "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "execute_bash",
+        "command": "echo \"Running pre tool command, for all built in tools\" >> /tmp/pre-tool.log"
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "echo \"Running post tool command, only for write tool\" >> /tmp/post-tool.log"
+      }
+    ]
+  },
+  "toolsSettings": {},
+  "useLegacyMcpJson": false,
+  "model": null
 }
 ```
 
+After saving and exiting, you will need to restart your Kiro CLI session. Restart Kiro CLI with
+
+```
+kiro-cli --agent java-dev
+```
+
+Now from the "[java-dev] >" lets try and trigger this with the following prompt:
+
+```
+Write a simple html page that says hello world, and then use the shell ls command to list all files
+```
+
+You will be prompted to trust these commands, and you should see that a new file is written and then it displays the directory list. Once it has finished, review your file system to see if you have a /tmp/pre-tool.log and /tmp/post-tool.log.
+
+Edit your java-dev custom agent configuration and change the matcher to use different tools and repeat the exercise.
+
 ---
 
+## Fine grained permissions for your Tools
 
-## Configuring fine grained permissions for your Tools
+In previous labs we configured tools within custom agents, controlling which tools and the default permissions granted. Kiro CLI allows you to go a step further and configure tools permissions with more precision. For example, we can trust the **"shell"** tool that will allow you to run specific bash commands or perhaps you want to only trust specific directories for reading and writing. 
 
-We saw earlier in this lab how we can configure tools within custom agents, controlling which tools a specific custom agent had access to as well as the permissions granted. This is great, but what if you wanted to have more fine grain control over access. For example, we saw that we have a tool called **"execute_bash"** that allows you to run bash commands. What if you wanted to only allow certain commands to run?
+This is possible using the **"toolsSettings"** configuration within custom agents. It allows you to configure specific controls that a given tool provides. We do need to know for each tool though, what configuration options we can configure. For that we can refer to [this page on Github](https://github.com/aws/amazon-q-developer-cli/blob/main/docs/built-in-tools.md) that covers the Kiro CLI tools.
 
-This is possible using the **"toolsSettings"** configuration within custom agents. It allows you to configure specific controls that a given tool provides. For example, from the [Github pages](https://github.com/aws/amazon-q-developer-cli/blob/main/docs/built-in-tools.md) we can see that:
+> **Important**
+> 
+> When you submit a prompt, if the activity falls within the constraints of what you have defined within the tool rule, Kiro CLI will carry out that task and you will not be prompted. However, if it falls outside of those constraints, then Kiro CLI will then trigger its standard warning message, ("Allow this action? Use 't' to trust (always allow) this tool for the session. [y/n/t]:"). The exception for this is where a tool provides an explicit deny option.
 
-* **fs_write** and **fs_read** provide **"allowedPaths"** and **"deniedPaths"** configuration options
-* **use_aws** provide **"allowedServices"** and **"deniedServices"** configuration options
-* **execute_bash** provide **"allowedCommands"**, **"deniedCommands""**, and **"allowReadOnly"** options
+Using that reference, we can see that for the "read" and "write" tools, we can configure **"allowedPaths"** and **"deniedPaths"** to allow us to control which directories Kiro CLI has permission to read/write. You can configure explicit files, or use regex and wildcards.
 
-You can provide explicity configuration references or use regex. Here is an example of how we would provide more fine grain control of what the **"execute_bash"** tool could do.
+> **Tip!** Some directories will be not behave as expected - any system directory will still trigger warnings despite being configured.
+
+In the following example we can control what directories the custom agent will have read access to (without asking for permission), and which directories Kiro CLI will block us.
 
 ```
 "toolsSettings": {
-    "execute_bash": {
-      "allowedCommands": ["git status", "git fetch"],
-      "deniedCommands": ["git commit .*", "git push .*"],
-      "allowReadOnly": true
-    }
-  }
-
-```
-
-
-If you are using tools that have been surfaced up via an MCP Server, you will need to review the documentation for that MCP Server and then use this configuration option in the same was as the built in ones. For example:
-
-```
-  "toolsSettings": {
-    "@git/git_status": {
-      "git_user": "$GIT_USER"
+    "read": {
+      "allowedPaths": ["~/green/*.md"],
+      "deniedPaths": ["~/red/*.md"]
     }
   }
 ```
 
-Not every tool has configuration options, so review documentation to find out if they do.
+I created two directories (green and red) in my home directory, adding a single markdown file in each. From the Kiro CLI prompt, when I ask "how many lines are in" we see:
 
-**Task-10**
+```
+[java-dev] > how many lines are in ~/green/test.md
 
-Lets configure our custom agent so that we limit what files Kiro CLI has access to. We want it to be able to read files in the current project directory, but exclude more sensitive files.
+> I'll check how many lines are in the ~/green/test.md file for you.
+Reading file: ~/green/test.md, all lines (using tool: read)
+ ✓ Successfully read 8 bytes from /{path}/green/test.md
+ - Completed in 0.2s
 
-Following on from previous examples, we will modify the custom agent as follows:
+> The file ~/green/test.md contains 1 line.
+```
+
+You might be thinking this is no big deal - the read tool has default trusted permission. However, the trusted permission is only for the current working directory. You can see this when you run the /tools command:
+
+```
+- read            trust working directory
+```
+
+In the above example, we are reading from outside the working directory. With this configuration, we were able to add that additional trust.
+
+Lets now try the red directory to see what happens.
+
+```
+[java-dev] > how many lines are in ~/red/test.md
+
+> I'll check how many lines are in the ~/red/test.md file for you.
+Command fs_read is rejected because it matches one or more rules on the denied list:
+  - ~/red/*.md
+
+> I understand the file read was rejected. You can check the line count of ~/red/test.md using
+this command in your terminal:
+```
+
+Lets put this into practice now in the next lab.
+
+**Task-05**
+
+Lets configure our custom agent so that we limit what files Kiro CLI has access to, and explicitly block one command. Exit Kiro CLI for a moment, and go to your home directory (in most computers this is referred to as ~). Create two directories, "project-1", "project-2", and "project-3" and in each, create a dummy file called "README.md".
+
+```
+(home)
+├── project-1
+│   └── README.md
+├── project-2
+│   └── README.md
+├── project-3
+│   └── README.md
+(all your other files)
+```
+
+From your Kiro CLI "[java-dev] >" prompt, edit your custom agent
+
+```
+/agent edit --name java-dev
+```
+
+replace the contents of your custom agent with the following:
 
 ```
 {
@@ -402,76 +510,229 @@ Following on from previous examples, we will modify the custom agent as follows:
   "prompt": null,
   "mcpServers": {},
   "tools": [
-    "fs_read",
-    "fs_write",
-    "use_aws"
+    "read",
+    "write",
+    "shell"
   ],
   "toolAliases": {},
-  "allowedTools": ["fs_read", "fs_write"],
+  "allowedTools": [],
   "resources": [
     "file://.amazonq/rules/**/*.md"
   ],
   "hooks": {},
   "toolsSettings": {
-    "fs_read": {
-      "allowedPaths": ["~/projects", "./src/**"],
-      "deniedPaths": ["/tmp/*"]
+    "read": {
+      "allowedPaths": ["~/project-1/**"],
+      "deniedPaths": ["/~/project-2/**"]
     }
   }
 }
 ```
 
-As you can see we have added the following:
+After saving, exit Kiro CLI and restart with this custom agent
 
 ```
-"toolsSettings": {
-    "fs_read": {
-      "allowedPaths": ["./**"],
-      "deniedPaths": ["/tmp/*"]
+kiro-cli --agent java-dev
+```
+
+And now try the following prompts from your "[java-dev] >"
+
+```
+read the file in ~/project-1/README.md
+read the file in ~/project-2/README.md
+```
+
+What happens? The first prompt should work, and Kiro CLI should not ask you for permission to read the file. When you try the second one, it should trigger an error like the following:
+
+```
+Command fs_read is rejected because it matches one or more rules on the denied list:
+  - ~/project-2/**
+  - ~/project-2/**
+```
+
+What happens when you try the following prompt:
+
+```
+read the file in ~/project-3/README.md
+```
+
+This time Kiro CLI brings up its trust prompt ("Allow this action? Use 't' to trust (always allow) this tool for the session. [y/n/t]:") - answer n to exit this. We can see that Kiro CLI is not trusted to automatically access this directory.
+
+Edit the java-dev custom agent configuration, from your current Kiro CLI session use the following command:
+
+```
+/agent edit --name java-dev
+```
+
+Replace the configuration so that it looks like the following:
+
+```
+{
+  "name": "java-dev",
+  "description": "A custom agent that provides Java Spring Boot developer guidance for using Spring Boot v3.x",
+  "prompt": "file://../shared/springboot.md",
+  "mcpServers": {},
+  "tools": [
+    "read","write","shell"
+  ],
+  "toolAliases": {},
+  "allowedTools": ["read"],
+  "resources": [
+    "file://AGENTS.md",
+    "file://README.md"
+  ],
+  "hooks": {
+  },
+  "toolsSettings": {
+    "read": {
+      "allowedPaths": ["~/project-1/**"],
+      "deniedPaths": ["~/project-2/**"]
     }
-  }
+  },
+  "useLegacyMcpJson": false,
+  "model": null
+}
 ```
 
-Which will block Kiro CLI's ability to read files from a specific directory (in this case "/tmp",) but allow it to read files from the current directory and all subdirectories.
-
-Lets create some files to test this out.
+Save, and then exit Kiro CLI and restart with the java-dev custom agent.
 
 ```
-echo "import os" > /tmp/q-cli-test.py
-echo "import os" > q-cli-test.py
-echo "import os" > ~/q-cli-test.py
+kiro-cli --agent java-dev
 ```
 
-Restart your Kiro CLI session, and try the following prompts:
+When it starts, you should see the following warning:
 
 ```
-> Can you review the "q-cli-test.py" file and tell me what programming language its wriiten in
+WARNING: You have trusted read tool, which overrides the toolsSettings: allowedPaths: ["~/project-1/**"]
 ```
 
-Does it run ok?
-
-Now try the following:
+Now try the same prompts again
 
 ```
-> Can you review the "/tmp/q-cli-test.py" file and tell me what programming language its wriiten in
-> Can you review the "~/q-cli-test.py" file and tell me what programming language its wriiten in
+read the file in ~/project-1/README.md
+read the file in ~/project-2/README.md
+read the file in ~/project-3/README.md
 ```
 
-Now what happens? You should see something like the following:
+This time you should see that project-1 and project-3 work without asking you for permission, but project-2 is still blocked. 
+
+As you start working with fine grain permission, be aware that "allowedTools" configuration is providing a blanket trust that is very broad. This is why the warning message is displayed. 
+
+Now lets take a look at blocking certain commands from our Kiro CLI session. Edit the java-dev custom agent configuration, from your current Kiro CLI session use the following command:
 
 ```
-> I'll read the "/tmp/q-cli-test.py" file to review it and identify the
-programming language.
-
-> I understand that the file read was rejected due to forbidden arguments. This is
-likely because the path "/tmp/q-cli-test.py" is outside the allowed directory
-scope or contains restricted content.
-
+/agent edit --name java-dev
 ```
 
-The ability to control at a granular level what your tools have access to is a very powerful capability that you can use to ensure that Kiro CLI is only operating on files that you want it to, or run commands that you want it to execute.
+Replace the configuration so that it looks like the following:
 
----
+
+
+```
+{
+  "name": "java-dev",
+  "description": "A custom agent that provides Java Spring Boot developer guidance for using Spring Boot v3.x",
+  "prompt": "file://../shared/springboot.md",
+  "mcpServers": {},
+  "tools": [
+    "read","write","shell"
+  ],
+  "toolAliases": {},
+  "allowedTools": [],
+  "resources": [
+    "file://AGENTS.md",
+    "file://README.md"
+  ],
+  "hooks": {
+  },
+  "toolsSettings": {
+      "shell": {
+            "allowedCommands": ["wc .*"],
+            "deniedCommands": ["rm .*"],
+            "autoAllowReadonly": true
+      }
+  },
+  "useLegacyMcpJson": false,
+  "model": null
+}
+```
+
+Save and exit Kiro CLI. Before starting Kiro CLI, in the current project directory create a README.md file, and add some text to this file (it can be anything). Once you have created this file, restart Kiro CLI with the java-dev custom agent.
+
+```
+kiro-cli --agent java-dev
+```
+
+Try the following prompt:
+
+```
+use wc to count how many words are in the README.md
+```
+
+What happens? Kiro CLI should now use the shell to run the wc command and give you the answer. It has respected the allowedCommands, and not prompted us for trust.
+
+Now try the next prompt:
+
+```
+rm the README.md file
+```
+
+What happens? Kiro CLI should block this. This is the error it displayed for me:
+
+```
+Command execute_bash is rejected because it matches one or more rules on the denied list:
+  - \Arm .*\z
+```
+
+Before we finish this lab, lets see what happens if we had not configured wc as an allowed command. Edit the java-dev custom agent configuration, from your current Kiro CLI session use the following command:
+
+```
+/agent edit --name java-dev
+```
+
+Update the configuration so that you remove the allowedCommand, so that it looks like the following:
+
+```
+{
+  "name": "java-dev",
+  "description": "A custom agent that provides Java Spring Boot developer guidance for using Spring Boot v3.x",
+  "prompt": "file://../shared/springboot.md",
+  "mcpServers": {},
+  "tools": [
+    "read","write","shell"
+  ],
+  "toolAliases": {},
+  "allowedTools": [],
+  "resources": [
+    "file://AGENTS.md",
+    "file://README.md"
+  ],
+  "hooks": {
+  },
+  "toolsSettings": {
+      "shell": {
+            "deniedCommands": ["rm .*"],
+            "autoAllowReadonly": true
+      }
+  },
+  "useLegacyMcpJson": false,
+  "model": null
+}
+```
+
+Save and exit Kiro CLI, and then restart again with the java-dev custom agent.
+
+```
+kiro-cli --agent java-dev
+```
+
+Now repeat the prompt:
+
+```
+use wc to count how many words are in the README.md
+```
+
+What happens this time? This time you should be prompted for permission - as you can see, toolsSettings allows us to enable fine grain control of trust within your Kiro CLI sessions.
 
 ---
 
@@ -492,11 +753,9 @@ This is something to bear in mind as you start adding MCP Server tools and want 
 
 ---
 
-### Changing how you refer to tools using toolsAliases
+### Changing tool names using toolsAliases
 
-In the previous section we shared how you can use **"toolsAliases"** to address namespace clashes.
-
-You can also use aliases to create shorter or more intuitive names for frequently used tools. For example, if you have some long tools you can shorten them with something like:
+In the previous section we shared how you can use **"toolsAliases"** to address namespace clashes. You can also use aliases to create shorter or more intuitive names for frequently used tools. For example, if you have some long tools you can shorten them with something like:
 
 ```
 {
@@ -509,30 +768,6 @@ You can also use aliases to create shorter or more intuitive names for frequentl
 
 This is a nice developer experience feature that I am using with some of my custom agent tools.
 
-
-
-
-
-
-
-
-
-
-
-
-
-***
-
-
-
-
-
-
-
-
-
-
-
 ---
 
 ## MCP Prompts
@@ -541,7 +776,7 @@ We have already looked at how Kiro CLI supports MCP Tools, but it also supports 
 
 To demonstrate this we are going to implement a simple MCP Server that provides Prompt resources, and then configure Kiro CLI to use this and show you how it works.
 
-**Task-08**
+**Task-06**
 
 Open a **new terminal window** and create a new directory (for example, "mcp-prompts").
 
@@ -554,7 +789,7 @@ import sys
 from mcp.server.fastmcp import Context, FastMCP
 
 # Create an MCP server
-mcp = FastMCP("QCLIPromptDemo")
+mcp = FastMCP("KCLIPromptDemo")
 
 @mcp.prompt()
 def create_new_project() -> str:
@@ -582,7 +817,7 @@ That's it we now have a simple custom MCP Server that provides Prompts. The conf
 ```
 {
     "mcpServers": {
-        "QCLIPromptDemo": {
+        "KCLIPromptDemo": {
             "command": "uv",
             "args": ["--directory", "{path to directory}", "run", "--with", "mcp", "mcp", "run", "mcp-server.py"]
         }
@@ -593,72 +828,54 @@ That's it we now have a simple custom MCP Server that provides Prompts. The conf
 We now need to add this MCP Server to our custom agent JSON configuration. We will use the one we have been using throughout this lab (but feel to create a new one if you want). When I do a "pwd" I get the following working directory:
 
 ```
-/Users/ricsue/amazon-q-developer-cli/mcp-server
+/{home}/{project workspace}/mcp-server
 ```
 
-Which gives me the path I need for the MCP Server. I then edit this JSON configuration file so it looks like this:
+Which gives me the path I need for the MCP Server. I then edit this JSON configuration file so it looks like this (in the below configuration, the {add your path} will be need to be updated for your own machine)
 
 ```
 {
-  "$schema": "https://raw.githubusercontent.com/aws/amazon-q-developer-cli/refs/heads/main/schemas/agent-v1.json",
-  "name": "python-developer",
-  "description": "",
-  "prompt": null,
+  "name": "java-dev",
+  "description": "A custom agent that provides Java Spring Boot developer guidance for using Spring Boot v3.x",
+  "prompt": "file://../shared/springboot.md",
   "mcpServers": {
-	"awslabs.aws-documentation-mcp-server": {
-        	"command": "uvx",
-        	"args": ["awslabs.aws-documentation-mcp-server@latest"],
-        	"env": {
-          		"FASTMCP_LOG_LEVEL": "ERROR",
-          		"AWS_DOCUMENTATION_PARTITION": "aws"
-        	  },
-		      "disabled": false
-		    },
-	"QCLIPromptDemo": {
+    "KCLIPromptDemo": {
           "command": "uv",
-          "args": ["--directory", "/Users/ricsue/amazon-q-developer-cli/mcp-server", "run", "--with", "mcp", "mcp", "run", "mcp-server.py"]
+          "args": ["--directory", "{add your path}/mcp-server", "run", "--with", "mcp", "mcp", "run", "mcp-server.py"]
         }
-	},
-  "tools": [
-    "fs_read",
-    "fs_write",
-    "use_aws",
-    "@awslabs.aws-documentation-mcp-server/read_documentation",
-    "@awslabs.aws-documentation-mcp-server/search_documentation"
-  ],
+  },
+  "tools": [ "*" ],
   "toolAliases": {},
-  "allowedTools": ["@awslabs.aws-documentation-mcp-server/read_documentation"],
+  "allowedTools": [],
   "resources": [
-    "file://.amazonq/rules/**/*.md"
+    "file://AGENTS.md",
+    "file://README.md"
   ],
   "hooks": {},
-  "toolsSettings": {}
+  "toolsSettings": {},
+  "useLegacyMcpJson": false,
+  "model": null
 }
 ```
-
-
 
 You can see we have added the new MCP Server we created by adding the following to the previous custom agent configuration file. Again, yours will be slightly different as the directory you have created for mcp-server will be different.:
 
 ```
-	"QCLIPromptDemo": {
+	"KCLIPromptDemo": {
           "command": "uv",
-          "args": ["--directory", "/Users/ricsue/amazon-q-developer-cli/mcp-server", "run", "--with", "mcp", "mcp", "run", "mcp-server.py"]
+          "args": ["--directory", "{your path}/mcp-server", "run", "--with", "mcp", "mcp", "run", "mcp-server.py"]
         }
 ```
 
-After saving this file, in the same directory, start an Kiro CLI session and confirm that the MCP Server has started ok:
+After saving this file, in the same directory, start an Kiro CLI session with the java-dev custom agent and confirm that the MCP Server has started ok:
 
 ```
-[python-developer] > /mcp
+[java-dev] > /mcp
 
-QCLIPromptDemo
+KCLIPromptDemo
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-✓ QCLIPromptDemo loaded in 9.79 s
+✓ KCLIPromptDemo loaded in 9.79 s
 
-awslabs.aws-documentation-mcp-server
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-✓ awslabs.aws-documentation-mcp-server loaded in 7.91 s
 ```
 
 If you run **"/tools"**, what do you see? It should look exactly as previous. We have not added any new tools with this MCP Server, we have added prompts. So how do we see these? Simple, we use the **"/prompts"** command within our Kiro CLI Session.
@@ -670,7 +887,7 @@ From the **">"** prompt, type **"/prompts"** and hit return. You should see some
 
 Prompt                    Arguments (* = required)
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-QCLIPromptDemo (MCP):
+KCLIPromptDemo (MCP):
 - create_new_project
 ```
 
@@ -692,10 +909,6 @@ me do that for you.
 
 Follow the output - you may need to provide permission as it will write files and we have not given this custom agent fs_write permission. Once it has finished, what did you get? Compare it to the prompt defined in the function - does it look like its created what was asked?
 
-
-
-
-
 ---
 
 ## Experimental Commands
@@ -713,23 +926,23 @@ A new experimental feature simplifies how you can do this in Kiro CLI. There are
 2. Use the new **"/todos"** command to view, list, and select a Todo list you want to work on
 3. Use the new **"/todos resume"** to start working on the next task in that list
 
-Todo's are files that get created in your local filesystem, within your current project workspace. There is a new directory called **".amazonq/cli-todo-lists"** that is created, and when you define your lists, they will appear here as json files.
+Todo's are files that get created in your local filesystem, within your current project workspace. There is a new directory called **".kiro/cli-todo-lists"** that is created, and when you define your lists, they will appear here as json files.
 
 Lets explore this new feature in the next lab.
 
-**Task-11**
+**Task-07**
 
-The first thing we need to do is enable this feature by using the /experiment mode ( [see the advanced section for more details if you missed that section out](/workshop/01b-advanced-setup-topics.md) ) - move down to "Todo Lists" and then press space
+The first thing we need to do is enable this feature by using the /experiment mode ( [see the advanced section for more details if you missed that section out](/workshop/02-advanced-setup-topics.md) ) - move down to "Todo Lists" and then press space
 
 ```
 ? Select an experiment to toggle ›
-  Knowledge          [ON]  - Enables persistent context storage and retrieval across chat sessions (/knowledge)
+  Knowledge          [OFF]  - Enables persistent context storage and retrieval across chat sessions (/knowledge)
   Thinking           [OFF] - Enables complex reasoning with step-by-step thought processes
 ❯  Tangent Mode      [OFF]  - Enables entering into a temporary mode for sending isolated conversations (/tangent)
   Todo Lists         [OFF] - Enables Q to create todo lists that can be viewed and managed using /todos
 ```
 
-After pressing space, you should see the followiing.
+After pressing space, you should see the following.
 
 ```
  Todo Lists experiment enabled
@@ -760,13 +973,13 @@ If we run the **"/tools"** command, we can see we now have a new tool available 
 Tool              Permission
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Built-in:
-- execute_bash    * trust read-only commands
-- fs_read         * trusted
-- fs_write        * not trusted
+- shell           * trust read-only commands
+- read            * trusted
+- write           * not trusted
 - introspect      * trusted
-- report_issue    * trusted
-- todo_list       * trusted
-- use_aws         * trust read-only commands
+- report          * trusted
+- todo            * trusted
+- aws             * trust read-only commands
 
 ```
 
@@ -778,13 +991,13 @@ From your Kiro CLI session, at the **">"** prompt, write the following:
 Create a todo list to generate a simple python flask app that returns a Yoda quote of the day
 ```
 
-You should see something similar to the following - note that this has invoked the **todo_list** tool that is now enabled when you configured this experimental feature.
+You should see something similar to the following - note that this has invoked the **todo** tool that is now enabled when you configured this experimental feature.
 
 ```
 > I'll create a todo list for building a simple Python Flask app that returns a Yoda quote of the day.
 
 
-🛠️  Using tool: todo_list (trusted)
+🛠️  Using tool: todo (trusted)
  ⋮
  ● TODO:
 [ ] Create requirements.txt with Flask dependency
@@ -802,22 +1015,7 @@ works.
 Ready to start implementing? I can work through these steps with you one by one.
 ```
 
-We are not going to do that straight away. Exit your Kiro CLI session, and take a look at the new directory and file that has been created.
-
-```
-└── .amazonq
-    ├── cli-agents
-    └── cli-todo-lists
-        └── 1758028067437.json
-```
-
-If you view that file, you see that it has been created in a specific format. This was the file created in the above example:
-
-```
-{"tasks":[{"task_description":"Create requirements.txt with Flask dependency","completed":false},{"task_description":"Create app.py with Flask app and Yoda quotes list","completed":false},{"task_description":"Add route that returns random Yoda quote as JSON","completed":false},{"task_description":"Test the Flask app locally","completed":false}],"description":"Create a minimal Python Flask app that returns a Yoda quote of the day","context":[],"modified_files":[],"id":"1758028067437"}%
-```
-
-Start your Kiro CLI session, and we are going to create another list. This time use the following prompt:
+We are not going to implement this yet. In fact, we are going to create another todo list. Write the following in your Kiro CLI ">" prompt
 
 ```
 Create a todo list to generate a simple python flask app that will generate a simple fact checking application
@@ -911,20 +1109,18 @@ and from the list that appears, again use the UP and DOWN arrow. Select the fact
 ✔ Deleted to-do list: Build a simple Python Flask fact-checking application with basic UI and fact verification functionality
 ```
 
-> You can also delete these by deleting the corresponding todo json file in the ".amazonq/cli-todo-lists" directory.
-
 ---
 
 ### Tangent Mode
 
-In the previous labs, we have explored context engineering and looked at some of the techniques you have available to you to effectively manage your context. In this lab we are going to introduce a new experimental feature that provides some useful additional capabilities to help you minimise polluting your context. What does this mean? As your Kiro CLI sessions progress, you might need to use Kiro CLI to do adjacent tasks (for example, maybe troubleshoot an issue, or perhaps dive into a rabbit hole) but those tasks might not necessarily contribute to your objective and so you might not want to include the output of those interactions in your context. 
+In the previous labs, we have explored context engineering and looked at some of the techniques you have available to you to effectively manage your context. In this lab we are going to introduce a new experimental feature that provides some useful additional capabilities to help you minimize polluting your context. What does this mean? As your Kiro CLI sessions progress, you might need to use Kiro CLI to do adjacent tasks (for example, maybe troubleshoot an issue, or perhaps dive into a rabbit hole) but those tasks might not necessarily contribute to your objective and so you might not want to include the output of those interactions in your context. 
 
 **Tangent mode** creates conversation checkpoints, allowing you to explore side topics without disrupting your main conversation flow. Enter tangent mode, ask questions or explore ideas, then return to your original conversation exactly where you left off.
 
 
-**Task-14**
+**Task-08**
 
-The first thing we need to do is enable this by using the /experiment mode ( [see the advanced section for more details if you missed that section out](/workshop/01b-advanced-setup-topics.md) ) - move down to "Tangent Mode" and then press space
+The first thing we need to do is enable this by using the /experiment mode ( [see the advanced section for more details if you missed that section out](/workshop/02-advanced-setup-topics.md) ) - move down to "Tangent Mode" and then press space
 
 ```
 ? Select an experiment to toggle ›
@@ -934,7 +1130,7 @@ The first thing we need to do is enable this by using the /experiment mode ( [se
   Todo Lists         [OFF] - Enables Q to create todo lists that can be viewed and managed using /todos
 ```
 
-After pressing space, you should see the followiing.
+After pressing space, you should see the following.
 
 ```
  Tangent Mode experiment enabled
@@ -949,10 +1145,10 @@ From the Kiro CLI session, you can now run the command **"/tangent"**
 You will notice that the **">"** prompt changes to **"↯ >"**, to let you know that you are now in tangent mode. What might you do when you are in tangent mode? Here are some example use cases:
 
 * Explore alternatives approaches - you might have started along one path, but you can use tangents to explore alternatives so that they do not add to your existing context
-* Getting help on Kiro CLI - if you need to ask Kiro CLI for help on some of its features, but dont want that to pollute your context
+* Getting help on Kiro CLI - if you need to ask Kiro CLI for help on some of its features, but do not want that to pollute your context
 * Clarification - you might want to dive into some details to make sure that you have everything you need, but want to do this in a way that does not distract your existing context
 
-You can check out some [additional examples use cases here](https://github.com/aws/amazon-q-developer-cli/blob/main/docs/tangent-mode.md#usage-examples)
+You can check out some [additional examples use cases here](https://kiro.dev/docs/cli/experimental/tangent-mode/)
 
 > If you see the following when you run the command (**"/tangent"**) command, you have not enabled Tangent in the experimental model
 > 
@@ -980,7 +1176,7 @@ Restored conversation from checkpoint (↯). - Returned to main conversation.
 
 You will notice that your prompt changes back, and you are now ready to carry on with your session.
 
-You might be thinking that what if you wanted to include your tangent conversation back into the main chat conversation? A new feature added in v1.16 of Kiro CLI allows you to do this by using a new argument that will preserve the last conversation back in your main context. It works as follows - after initiating a new tangent session, after you have prompted and got a response, you can use the following command, **"/tangent tail"** which will then generate the following output.
+You might be thinking that what if you wanted to include your tangent conversation back into the main chat conversation? Kiro CLI allows you to do this by using a new argument that will preserve the last conversation back in your main context. It works as follows - after initiating a new tangent session, after you have prompted and got a response, you can use the following command, **"/tangent tail"** which will then generate the following output.
 
 ```
 ↯ > /tangent tail
@@ -988,7 +1184,7 @@ You might be thinking that what if you wanted to include your tangent conversati
 Restored conversation from checkpoint (↯) with last conversation entry preserved.
 ```
 
-**Task-15**
+**Task-09**
 
 Close and then start a new Kiro CLI session. From this new session, create a new tangent by running the following:
 
@@ -1034,13 +1230,6 @@ Restored conversation from checkpoint (↯) with last conversation entry preserv
 
 > We were discussing Python's FastAPI framework. I explained its key features like high performance, automatic documentation, type safety, and async support, along with a basic code example and installation instructions.
 ```
-
-
----
-
-
-
-
 
 ---
 
