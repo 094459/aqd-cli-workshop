@@ -1230,6 +1230,60 @@ Restored conversation from checkpoint (↯) with last conversation entry preserv
 
 > We were discussing Python's FastAPI framework. I explained its key features like high performance, automatic documentation, type safety, and async support, along with a basic code example and installation instructions.
 ```
+---
+
+### Context Usage Indicator
+
+In earlier labs you learned about the importance of managing your context window, looking at how /context can help you know how close you are getting to your limit.
+
+The Context Usage Indicator experimental features provides a visual cue, replacing the ">" prompt with an additional identifier for the percentage use of your context window. 
+
+```
+12% [java-dev] >
+```
+
+**Task-10**
+
+From your Kiro CLI session, at the ">" prompt type:
+
+```
+/experiment
+```
+
+Move the arrow keys down to the "Context Usage Indicator" and press SPACE.
+
+```
+> /experiment
+
+ Press (↑↓) to navigate · Enter(⏎) to toggle an experiment
+  Knowledge                 [OFF] Enables persistent context storage and retrieval across chat sessions (/knowledge)
+  Thinking                  [OFF] Enables complex reasoning with step-by-step thought processes
+  Tangent Mode              [ON]  Enables entering into a temporary mode for sending isolated conversations (/tangent)
+  Todo Lists                [ON]  Enables Kiro to create todo lists that can be viewed and managed using /todos
+  Checkpoint                [OFF] Enables workspace checkpoints to snapshot, list, expand, diff, and restore files (/
+❯ Context Usage Indicator   [ON]  Shows context usage percentage in the prompt (e.g., [rust-agent] 6% >)
+  Delegate                  [OFF] Enables launching and managing asynchronous subagent processes
+```
+
+Once you have exited, your Kiro CLI prompt will change. If you want to revert back, just go back and toggle the same feature again and this will turn this experimental feature off.
+
+---
+
+### Delegate
+
+(Coming Soon)
+
+---
+
+### Checkpoint
+
+(Coming Soon)
+
+---
+
+### Knowledge
+
+(Coming Soon)
 
 ---
 
