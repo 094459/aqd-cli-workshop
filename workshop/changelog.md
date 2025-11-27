@@ -5,6 +5,7 @@
 - Update to include new tools added (fetch_web and fetch_search)
 - Update to include fixes from Kiro CLI v1.21.0
 - Update how to set and view Kiro debug logs
+- Adding 07-Writing-Code lab
 
 23rd November 2025
 
