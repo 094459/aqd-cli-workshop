@@ -481,14 +481,19 @@ Built-in
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
+- web_fetch       not trusted
+- web_search      not trusted
+
 ```
 
-You will notice that we have one tool that is automatically trusted - **introspect**. We have two tools that are trusted with caveats, with **aws** and **read** constrained to the current working directory and read only commands.We can see writing and executing files (shell) are not trusted. What this means is that if we ask Kiro CLI to do something that wants to use these tools, it is going to prompt us for permission. Lets see this in action.
+You will notice that we have one tool that is automatically trusted - **introspect**. We have two tools that are trusted with caveats, with **aws** and **read** constrained to the current working directory and read only commands.We can see writing and executing files (shell) are not trusted. What this means is that if we ask Kiro CLI to do something that wants to use these tools, it is going to prompt us for permission. Lets see this in action. We also have **web_fetch** and **web_search** tools that are disabled by default. 
 
 The number of tools that appears will change based on a number of factors:
 
 * whether you have configured any Kiro CLI experimental features [(see the advanced setup for more details about that)](/workshop/02-advanced-setup-topics.md)
+* new features introduced by Kiro CLI updates (for example, v1.21.0 added web_fetch and web_search) - the best source of know what available tools exist is [the built in tools reference pages](https://kiro.dev/docs/cli/reference/built-in-tools/)
 * the number of Model Context Protocol (MCP) servers you configure - each MCP server will have it's own tools (don;t worry if you are not sure what MCP servers are, we will explore those in a bit)
+
 
 By default, Kiro CLI auto trusts the built in Tools that perform "Read" operations, but does not trust any tool that needs to write to the file system or execute a command or program. Kiro CLI gives you the ability to control though. Lets take a look at this, exploring Tools permissions and then seeing how this work by extending the previous task.
 
@@ -518,6 +523,8 @@ Built-in
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
+- web_fetch       not trusted
+- web_search      not trusted
 
 ```
 
@@ -846,7 +853,7 @@ When we start Kiro CLI, it defaults to a custom agent configuration (**kiro_defa
 ```
 kiro-cli agent list
 
-* kiro_default    **No path found**
+* kiro_default    (Built-in)
 ```
 
 A custom agent is a json configuration file which we create and then configure for what need (we will see what this looks like in a moment). Once we have created it, we can then use it when we start Kiro CLI.
@@ -922,7 +929,7 @@ If we run the "/agent list" command now, we should see that we have our new cust
 Which should generate output like the following:
 
 ```
-  kiro_default    **No path found**
+  kiro_default    (Built-in)
   python-dev      /{your home directory}/{your project directory}/.kiro/agents
 ```
 
@@ -1432,6 +1439,8 @@ Tool                      Permission
 - introspect              trusted
 - report                  not trusted
 - aws                     trust read-only commands
+- web_fetch               not trusted
+- web_search              not trusted
 
 awslabs.aws-documentation-mcp-server (MCP)
 - read_documentation      not trusted

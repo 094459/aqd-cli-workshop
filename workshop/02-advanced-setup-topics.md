@@ -28,77 +28,22 @@ If you are running Kiro CLI behind a proxy, you should check out the [official K
 
 ### Debugging options
 
-Kiro provides a number of options ot help you troubleshoot issues. From accessing debug logs to trying to fix integration issues, it is super handy to know about. We can access the help and list all the available options using the "kiro-cli debug --help" command
+When starting Kiro CLI, you can set an environment variable (KIRO_LOG_LEVEL) which will alter the level and detail output of logs which will appear in the **"$TMPDIR/kiro-log/kiro-chat-log"** log file.
 
 ```
-Usage: kiro-cli debug [OPTIONS] <COMMAND>
-
-Commands:
-  app                     Debug the app
-  build                   Switch to another branch of a Fig.js app
-  autocomplete-window     Toggle/set autocomplete window debug mode
-  logs                    Show debug logs
-  input-method            Input method debugger
-  prompt-accessibility    Prompt accessibility
-  sample                  Sample desktop process
-  verify-codesign         Debug application codesigning
-  accessibility           Accessibility
-  key-tester              Key Tester
-  diagnostics             Watches diagnostics
-  query-index             Queries remote repository for updates given the specified metadata
-  devtools                Open up the devtools of a specific webview
-  get-index               Displays remote index
-  list-intellij-variants  Lists installed IntelliJ variants
-  shell                   Disables sourcing of user shell config and instead uses a minimal shell config
-  fix-permissions         Update the shell config permissions to have the correct owner and access rights
-  refresh-auth-token
+export KIRO_LOG_LEVEL=trace
+k
 ```
 
-You can get realtime logging information from Kiro CLI by running the following command in a terminal window:
-
-```
-kiro-cli debug log
-```
-
-as you start using Kiro CLI, depending on the logging level set, you will now see realtime logging. This is useful if you are trying to troubleshoot issues.
-
----
-
-**Getting diagnostic info from your Kiro CLI installation**
-
-A very handy option when you have installed Kiro CLI is the following command:
-
-```
-k diagnostic
-```
-
-Which provides a summarized output of your installation setup. Your output will be different from mine, but this is what I got when I ran this:
-
-```
-[q-details]
-version = "1.20.0"
-hash = "ac0d8dec437123a79962295fdad4122ef9642da3"
-date = "2025-11-16T23:27:14.134786Z (2d ago)"
-variant = "full"
-
-[system-info]
-os = "macOS 15.7.2 (24G325)"
-chip = "Apple M1 Pro"
-total-cores = 10
-memory = "32.00 GB"
-
-[environment]
-...
-...
-```
+Which will provide the most detailed level of logging. Use carefully as this will likely slow down your normal operation of Kiro CLI. The options you have are "trace", "debug", "warn", "info", and "error".
 
 ---
 
 ### Settings
 
-Kiro CLI allows you to set a number of different configuration parameters so that you can tailor how it works. The Kiro CLI settings file lives in the "~.kiro/settings" directory, and is json file that you can edit.
+The Kiro CLI settings file lives in the "~.kiro/settings" directory, and is json file that you can edit.
 
-You can make changes to your Kiro settings using the **"kiro-cli settings"** command, or by directly updating the configuration file (which we will cover below).
+Kiro CLI allows you to set a number of different configuration parameters so that you can tailor how it works. You can make changes to your Kiro settings using the **"kiro-cli settings"** command, or by directly updating the configuration file.
 
 For example, if I wanted to change the default model that Kiro CLI uses, I can use the following command from the terminal.
 
@@ -137,6 +82,35 @@ You can view the various options by using the "help" option when running this:
 ```
 q settings help
 ```
+---
+
+### Getting diagnostic info from your Kiro CLI installation
+
+"kiro-cli diagnostic" is a very handy option that provides a summarized output of your installation setup.
+
+```
+kiro-cli diagnostic
+```
+
+Your output will be different from mine, but this is what I got when I ran this:
+
+```
+[q-details]
+version = "1.20.0"
+hash = "ac0d8dec437123a79962295fdad4122ef9642da3"
+date = "2025-11-16T23:27:14.134786Z (2d ago)"
+variant = "full"
+
+[system-info]
+os = "macOS 15.7.2 (24G325)"
+chip = "Apple M1 Pro"
+total-cores = 10
+memory = "32.00 GB"
+
+[environment]
+...
+...
+```
 
 ---
 
@@ -169,6 +143,8 @@ When you enter this command, you will see the following (you might see a differe
 You can use the **UP** and **DOWN** arrow keys and then press **SPACE** to toggle the status of the experimental feature between ON or OFF. As you can see above, I have enabled the most of these experimental features, with the exception of Context Usage Indicator" which has remained disabled.
 
 > What this feature is doing is simplifying configuration to your Kiro CLI settings file which we have covered above. As you toggle these different experimental features you will see that they are updated in your settings.json file.
+
+We dive into some of these features in the [advanced topics](/workshop/04-advanced-topics.md) part of this workshop.
 
 ---
 

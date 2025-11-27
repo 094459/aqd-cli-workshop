@@ -138,7 +138,32 @@ kiro-cli 1.20.0
 
 ---
 
-**Updating Kiro CLI**
+### Default MCP Server installed
+
+From v.1.21.0 of Kiro CLI, a default MCP Server is installed (mcp-server-fetch) that provides "web_fetch" and "web_search" tools. Don't worry too much at the moment what these are as we will cover these in later labs. For the time being know that these are configured. The configuration file likes in **".kiro/settings/mcp.json"**
+
+```
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}%
+```
+
+We will leave this configured for the labs that come later.
+
+
+---
+
+#### Updating Kiro CLI
 
 You can update Kiro CLI to the latest version by running the following command, which will check for updates.
 
@@ -162,13 +187,13 @@ kiro-cli version --changelog 1.20.0
 
 ---
 
-**Finding your Kiro CLI chat history**
+#### Finding your Kiro CLI chat history
 
 Kiro CLI records each command you enter in a history file that is located in the **"~.kiro"** directory. This file is called **".cli_bash_history"** and you can view this to see all the previous prompts and commands you issued.
 
 ---
 
-**Creating alias for Kiro CLI**
+#### Creating alias for Kiro CLI
 
 You can create alias files in your shell to make accessing Kiro CLI easier. Here is what I have in mine:
 

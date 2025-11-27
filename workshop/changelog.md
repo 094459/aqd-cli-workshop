@@ -1,5 +1,11 @@
 ## Tracking changes with this workshop
 
+27th November 2025
+
+- Update to include new tools added (fetch_web and fetch_search)
+- Update to include fixes from Kiro CLI v1.21.0
+- Update how to set and view Kiro debug logs
+
 23rd November 2025
 
 - Sections 2,3, and 4 now completed
