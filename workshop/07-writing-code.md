@@ -349,14 +349,6 @@ Now try running the "/tools" command again. What has changed? You should see tha
 
 ---
 
-Add custom hook (tool) to add copyright and oss headers?
-
-
-
-
-
----
-
 **Task-06**
 
 Now we have an implementation plan, we can get Kiro CLI to start writing some code for us. From the From your "[customer-survey] >" prompt, enter the following text:
