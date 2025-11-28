@@ -351,6 +351,29 @@ Now try running the "/tools" command again. What has changed? You should see tha
 
 **Task-06**
 
+Before we move to getting Kiro CLI to write the code, we are going to setup a new steering file to add some copyright headers to the code we generate. You might be thinking why this was not included in the steering document we initially created. There are no hard rules, and good practices are still emerging. One practice that seems to be effective is to try and split steering documents by domain and scope. The first steering file defined how we wanted the code written, and was focused towards Python things. Adding copyright headers is something that is broader than Python, and might potentially be different from project to project, so putting it into its own steering file makes sense.
+
+Create the following new document in your ".kiro/steering" directory, and call it ip.md. Add the contents of the [ip.md](/resources/ip.md) file in the resources folder.
+
+Your directory structure should look like this:
+
+```
+├── .kiro
+│   ├── agents
+│   │   └── customer-survey.json
+│   └── steering
+│       ├── ip.md
+│       └── python-dev.md
+├── data-model
+│   └── database-schema.yaml
+```
+
+Run the "/context show" command - you should see that this new file has now been added to your context.
+
+---
+
+**Task-07**
+
 Now we have an implementation plan, we can get Kiro CLI to start writing some code for us. From the From your "[customer-survey] >" prompt, enter the following text:
 
 ```
@@ -384,11 +407,13 @@ I will run the following command: cd /{your project directory}/kiro-customer-app
 
 It needs to run a command so is requesting the use of the shell tool. In this instance I am going to respond "t" to trust this. When you trust a tool, that trust is only valid for the duration of that session. Once I exit Kiro CLI, trust will revert back to "not trusted".
 
+In another terminal take a look at the files being generated. You should notice that the files created should have the copyright information we defined in the previous lab.
+
 It will take 4-5 minutes to run some commands (to install libraries and dependencies, and start the server), so a great time to stretch your legs and rehydrate.
 
 ---
 
-**Task-07**
+**Task-08**
 
 Now Kiro CLI has created the application code, we need to start it so we can test to make sure it is working. During the previous lab, a README might have been created that explains how to start this application. We will ignore that for the moment, and get Kiro CLI to help us get the app up and running
 
@@ -412,7 +437,7 @@ Stop the application (CTRL + C) before proceeding with the next lab.
 
 ---
 
-**Task-08**
+**Task-09**
 
 Kiro CLI makes it easy to add tests to our project. In this next lab we are going to generate tests for the code we have just created. 
 
@@ -493,7 +518,7 @@ Exit Kiro CLI and start up a code editor (have you tried Kiro IDE?) and use that
 
 ---
 
-**Task-09**
+**Task-10**
 
 We have our application up and running, but I want to do one final thing before we are done. I want to check the generated web application for accessibility. There are various open source tools that help you perform audits and help you take remedial action. Some of these are now available as MCP Servers, so we are going to configure one and then use it against the code we have created.
 
