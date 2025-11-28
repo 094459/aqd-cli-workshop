@@ -86,6 +86,10 @@ In this lab we are going to use some of the things we have learned to help use w
 
 [Follow this link](workshop/07-writing-code.md) to get started.
 
+**Spec Driven Development**
+
+If you are interested in more hands on tutorials on how to use AI coding assistants to write code, I have written [a spec driven development](https://github.com/094459/sdd-workshop) workshop that dives into using Kiro IDE to go through both greenfield and brownfield development use cases.
+
 ---
 
 ## Automation
@@ -104,6 +108,13 @@ In this lab we will explore how we can use Kiro CLI to help us get up to speed q
 
 ---
 
+## Debugging
+
+When you write code, you are going to encounter problems. As good as Kiro is at writing code, issues will come up and need your help to fix. In this lab we will look at effective debugging and troubleshooting techniques when using Kiro CLI.
+
+[Follow this link](workshop/09-debugging.md) dive into this lab.
+
+---
 
 ## Feedback!
 
