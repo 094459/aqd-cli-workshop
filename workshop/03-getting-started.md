@@ -246,7 +246,7 @@ I want to design a customer service application. Can you provide me with the top
 Now try saving your current conversation:
 
 ```
-> /save customer-service
+/save customer-service
 ```
 
 After it has saved, open up a new terminal and review the output. 
@@ -254,7 +254,7 @@ After it has saved, open up a new terminal and review the output.
 Now close your Kiro CLI session and start it again. From the **">"** prompt, lets reload that conversation:
 
 ```
-> /load session-checkpoint
+/load session-checkpoint
 ```
 
 After it loads, ask it something about the customer service application (or if you did your own prompts, something about those)
