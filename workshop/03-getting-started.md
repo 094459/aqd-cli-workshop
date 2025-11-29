@@ -342,7 +342,7 @@ So far we have been using Kiro CLI in chat mode to write prompts and then get re
 Open up Kiro CLI and run the following commands:
 
 ```
-> ! ls -altr
+! ls -altr
 ```
 
 Review the output - you should see your current directory listed out. Experiment with a few other commands.
