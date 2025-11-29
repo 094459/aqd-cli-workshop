@@ -43,7 +43,7 @@ To follow along this workshop, you are going to need:
 * A Windows (with Windows Subsystem for Linux - wsl configured), MacOS, or Linux machine with the ability to install software
 * A [supported terminal]() software ([most are supported](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-supported-envs.html?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el))
 * A supported shell - bash, zsh, or fish
-* You will need some standard developer tools: git, uv
+* You will need some standard developer tools: git, [uv](https://docs.astral.sh/uv/getting-started/installation/), npx
 * You will need Python 3.10.x or later
 * (optional) A code editing tool (Zed, VSCode, etc) - this will make it easier to work with files that are generated, but vim also works
 
