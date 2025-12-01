@@ -92,6 +92,14 @@ If you are interested in more hands on tutorials on how to use AI coding assista
 
 ---
 
+## Building with APIs 
+
+In this lab we are going to dive into how to use Kiro CLI to work with APIs - this lab will provide you some ideas of how you can build using existing APIs, and build new APIs.
+
+[Follow this link](/workshop/11-building-with-apis.md) to get started.
+
+---
+
 ## Automation
 
 In this lab we are going to look at sysadmin and automation use cases, exploring some of the ways you can use Kiro CLI in your day to day activities.
@@ -111,6 +119,14 @@ In this lab we will explore how we can use Kiro CLI to help us get up to speed q
 ## Debugging
 
 When you write code, you are going to encounter problems. As good as Kiro is at writing code, issues will come up and need your help to fix. In this lab we will look at effective debugging and troubleshooting techniques when using Kiro CLI.
+
+[Follow this link](workshop/09-debugging.md) dive into this lab.
+
+---
+
+## Working with data
+
+Developers spend a lot of time working with data, and so in this lab we explore some of the ways you can use Kiro CLI to help you. Whether it is working with different data formats, generating sample data, or supercharging how you work with SQL, Kiro CLI will transform how you work with data.
 
 [Follow this link](workshop/09-debugging.md) dive into this lab.
 
