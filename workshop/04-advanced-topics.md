@@ -1,4 +1,4 @@
-![Amazon Q Developer header](/images/kiro-workshop-header.png)
+![Kiro CLI header](/images/kiro-workshop-header.png)
 
 # Diving deeper into Kiro CLI
 
@@ -1150,7 +1150,7 @@ You will notice that the **">"** prompt changes to **"↯ >"**, to let you know 
 * Getting help on Kiro CLI - if you need to ask Kiro CLI for help on some of its features, but do not want that to pollute your context
 * Clarification - you might want to dive into some details to make sure that you have everything you need, but want to do this in a way that does not distract your existing context
 
-You can check out some [additional examples use cases here](https://kiro.dev/docs/cli/experimental/tangent-mode/)
+You can check out some [additional examples use cases here](https://kiro.dev/docs/cli/experimental/tangent-mode/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
 
 > If you see the following when you run the command (**"/tangent"**) command, you have not enabled Tangent in the experimental model
 > 
@@ -1293,7 +1293,7 @@ Once you have exited, your Kiro CLI prompt will change. If you want to revert ba
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Kiro custom agent configuration file reference](https://kiro.dev/docs/cli/custom-agents/configuration-reference/)
+* [Kiro custom agent configuration file reference](https://kiro.dev/docs/cli/custom-agents/configuration-reference/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
 
 ### Completed!
 

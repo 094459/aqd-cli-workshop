@@ -1,4 +1,4 @@
-![Amazon Q Developer header](/images/kiro-workshop-header.png)
+![Kiro CLI header](/images/kiro-workshop-header.png)
 
 ## Overview
 
@@ -533,7 +533,7 @@ We have our application up and running, but I want to do one final thing before 
 We are going to update the custom agent, so from your Kiro CLI session, use the following command:
 
 ```
-/agent edit --name customer-survey
+/agent edit --name customer
 ```
 
 And edit the file so that the JSON configuration so that it looks like the following:
@@ -562,7 +562,7 @@ And edit the file so that the JSON configuration so that it looks like the follo
 After saving, restart your Kiro CLI session with:
 
 ```
-q chat --agent customer-survey-project
+kiro-cli chat --agent customer-survey
 ```
 
 You should notice during the start that Kiro CLI attempts to start the MCP server. It will continue to load this in the background whilst it presents you with the "[customer-survey] >" prompt.
@@ -585,7 +585,7 @@ a11y
 and we can see what additional tools have been made available with **"/tools"**:
 
 ```
-[customer-survey-project] > /tools
+[customer-survey] > /tools
 
 
 Tool               Permission

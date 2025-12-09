@@ -1,4 +1,4 @@
-![Kiro header](/images/kiro-workshop-header.png)
+![Kiro CLI header](/images/kiro-workshop-header.png)
 
 # What is Model Context Protocol (MCP)
 
@@ -53,4 +53,4 @@ The MCP security model in Amazon Q Developer CLI is designed with these principl
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Kiro MCP documentatin](https://kiro.dev/docs/cli/mcp/)
+* [Kiro MCP documentatin](https://kiro.dev/docs/cli/mcp/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)

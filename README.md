@@ -20,7 +20,7 @@ To many folk though, using the command line can be daunting, for many reasons. F
 
 If only we could get some help with this.
 
-[Kiro CLI](https://kiro.dev/download) brings IDE-style autocomplete and agentic capabilities to your terminal. It features:
+[Kiro CLI](https://kiro.dev/download?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) brings IDE-style autocomplete and agentic capabilities to your terminal. It features:
 
 * Auto Completion: IDE-style completions to hundreds of popular CLIs like git, npm, docker, and aws.
 * Natural Language Chat: Interact with your terminal using natural language to ask questions, debug issues, or explore the codebase.
@@ -41,8 +41,7 @@ It is pretty awesome, and in this workshop you will get hands on with it so that
 To follow along this workshop, you are going to need:
 
 * A Windows (with Windows Subsystem for Linux - wsl configured), MacOS, or Linux machine with the ability to install software
-* A [supported terminal]() software ([most are supported](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-supported-envs.html?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el))
-* A supported shell - bash, zsh, or fish
+* A supported terminal (most are supported) and supported shell - bash, zsh, or fish
 * You will need some standard developer tools: git, [uv](https://docs.astral.sh/uv/getting-started/installation/), npx
 * You will need Python 3.10.x or later
 * (optional) A code editing tool (Zed, VSCode, etc) - this will make it easier to work with files that are generated, but vim also works
@@ -89,6 +88,15 @@ In this lab we are going to use some of the things we have learned to help use w
 **Spec Driven Development**
 
 If you are interested in more hands on tutorials on how to use AI coding assistants to write code, I have written [a spec driven development](https://github.com/094459/sdd-workshop) workshop that dives into using Kiro IDE to go through both greenfield and brownfield development use cases.
+
+---
+
+## Reviewing your code with Kiro CLI
+
+In this lab we will take a look at how you can use Kiro CLI to review your project. Whether this is using Kiro CLI to help you review code, run third party scanning and review tools more efficiently, we can use Kiro CLI to be our second pair of eyes. We are going to build from the previous lab, although you can follow along with your own projects if you prefer. 
+
+[Follow this link](/workshop/12-reviewing-code.md) to get started.
+
 
 ---
 

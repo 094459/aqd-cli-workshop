@@ -1,5 +1,9 @@
 ## Tracking changes with this workshop
 
+10th December 2025
+
+- Added Reviewing Code using Kiro CLI
+
 27th November 2025
 
 - Update to include new tools added (fetch_web and fetch_search)

@@ -1,4 +1,4 @@
-![Amazon Q Developer header](/images/kiro-workshop-header.png)
+![Kiro CLI header](/images/kiro-workshop-header.png)
 
 # Diving deeper into Kiro CLI setup
 
@@ -22,7 +22,7 @@ Don't worry too much at this stage though, you do not need to do anything yet. I
 
 ### Using Kiro CLI behind a Proxy
 
-If you are running Kiro CLI behind a proxy, you should check out the [official Kiro documentation](https://kiro.dev/docs/cli/installation/) that provides details on how you can configure this.
+If you are running Kiro CLI behind a proxy, you should check out the [official Kiro documentation](https://kiro.dev/docs/cli/installation/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) that provides details on how you can configure this.
 
 ---
 
@@ -32,7 +32,7 @@ When starting Kiro CLI, you can set an environment variable (KIRO_LOG_LEVEL) whi
 
 ```
 export KIRO_LOG_LEVEL=trace
-k
+kiro-cli
 ```
 
 Which will provide the most detailed level of logging. Use carefully as this will likely slow down your normal operation of Kiro CLI. The options you have are "trace", "debug", "warn", "info", and "error".
@@ -74,13 +74,13 @@ mcp.loadedBefore = true
 You can view the settings of individual settings using the format **kiro-cli settings {setting}**, for example:
 
 ```
-q setting chat.Mode
+kiro-cli setting chat.Mode
 ```
 
 You can view the various options by using the "help" option when running this:
 
 ```
-q settings help
+kiro-cli settings help
 ```
 ---
 
@@ -95,7 +95,7 @@ kiro-cli diagnostic
 Your output will be different from mine, but this is what I got when I ran this:
 
 ```
-[q-details]
+[kiro-details]
 version = "1.20.0"
 hash = "ac0d8dec437123a79962295fdad4122ef9642da3"
 date = "2025-11-16T23:27:14.134786Z (2d ago)"
@@ -166,7 +166,7 @@ If you want to disable this at any time, just run the same command but use "fals
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Kiro CLI Experimental features](https://kiro.dev/docs/cli/experimental/)
+* [Kiro CLI Experimental features](https://kiro.dev/docs/cli/experimental/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
 
 
 ---
@@ -174,4 +174,4 @@ Some additional reading material that dives deeper into this topic if you want t
 
 ### Completed!
 
-Now that you have set everything up, we can proceed to the next step which is [exploring how to get started with Kiro CLI](02a-getting-started.md)
+Now that you have set everything up, we can proceed to the next step which is [exploring how to get started with Kiro CLI](03-getting-started.md)
