@@ -551,6 +551,80 @@ You can [review the whole report here](/resources/review-log.md)
 
 ---
 
+## Reviewing changes
+
+In the previous lab we looked at reviewing the entire project, but we can also apply the same approach to assessing just the changes we have made since the last commit. In this next lab we are going to build from the previous example, and show how Kiro CLI can work with git diffs to narrow down your review focus.
+
+**Task-08**
+
+We want to close the current Kiro CLI session so that we can empty the context window. After exiting, from the terminal run the following command to check the status of your project workspace:
+
+```
+git status
+git diff
+```
+
+You should see the updated and new files that have been added to the project workspace and what we have been working with in the last few labs. 
+
+
+We now need to delete the previous REVIEW-LOG.md that was created:
+
+```
+rm REVIEW-LOG.md
+```
+
+Now restart Kiro CLI with the code-review custom agent:
+
+```
+kiro-cli --agent code-review
+```
+
+From the "[code-review]>" prompt, enter the following:
+
+```
+Review the updated code in the "git diff" in the project workspace. I want you to review it these changes. Focus the review on code quality, security good practices, solid architecture, and general good practices.
+```
+
+You should see Kiro start and prompt you for permission to run the git-diff command:
+
+```
+
+[code-review] > Review the updated code in the "git diff" in the project workspace. I want you to review it these changes. Focus the review on code quality, security good practices, solid architecture, and general good practices.
+
+
+> I'll review the git diff for you. Let me first check what changes have been made in the project workspace.
+I will run the following command: git diff (using tool: shell)
+Purpose: Get the git diff to review the changes
+
+
+Allow this action? Use 't' to trust (always allow) this tool for the session. [y/n/t]:
+```
+
+After a short while, Kiro will produce a new REVIEW-LOG.md and conclude with a summary - here is what was produced when I ran this, yours might(will) differ.
+
+```
+> I've reviewed the git diff and created a comprehensive review log. The main concerns are:
+
+Critical Issues:
+1. Missing CSRF Extension - The code references a CSRFTokenExtension that doesn't exist, which will cause runtime errors
+2. Authorization Logic - The export route has a minor inefficiency in validation order
+
+Security Considerations:
+- The export functionality looks generally secure with proper user authorization checks
+- File naming uses integer IDs which is safe from path traversal
+
+Architecture Notes:
+- The export feature is well-structured but could benefit from better error handling
+- Response format consistency could be improved
+
+The export functionality is a solid addition, but you'll need to implement the missing CSRF extension to prevent runtime errors. Would you like me
+to help create that missing extension class
+```
+
+We will leave it here, but this lab has shown you that you can review just the changes that AI coding tools make and this is something you should use to understand the impact of changes made to your project.
+
+---
+
 ## Code reviews with external tools
 
 Whilst AI coding tools are great at generating high quality code and keep getting better, they can still hallucinate. They can still produce code that might use less desirable coding practices, so you need to be on the ball. So far we have seen how we can use the built in capabilities of Kiro CLI to address this. Sometimes though, you might want to have an extra level of review and this is where running a number of code review tools can be helpful. 
@@ -559,7 +633,7 @@ Kiro CLI is able to integrate and use external tools to help you run further cod
 
 ---
 
-**Task-08**
+**Task-09**
 
 We are going to add the Automated Security Helper (ASH) MCP tool, which provides Kiro CLI with some additional tools to run quality and security scans using a number of well known (and loved) open source technologies. We will first update our custom agent to add this.
 
@@ -771,7 +845,7 @@ In the last few labs we have seen both how Kiro CLI can help with pair programmi
 
 There are thousands of MCP servers out there, that provide many other review capabilities. One such MCP server is the A11y MCP server that provides a way for you to scan and generate reports on how accessible your application is. 
 
-**Task-09**
+**Task-10**
 
 From the "[code-review]>" prompt, type the following to edit the configuration:
 
