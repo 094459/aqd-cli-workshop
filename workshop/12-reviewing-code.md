@@ -551,6 +551,74 @@ You can [review the whole report here](/resources/review-log.md)
 
 ---
 
+We are nearly done in this lab. What if you have a set of existing development or coding standards you want to assess against. Kiro CLI can produce a report based on a baseline you provide it.
+
+Exit your Kiro CLI session, and create a new steering document in ".kiro/steering" called "review-stds.md" and copy the [contents of this file](/resources/code-review-standards.md) into it. After saving, restart Kiro CLI using"
+
+```
+kiro-cli --agent code-review
+```
+
+We can check that this is now in context by using "/context show" and you should see it matched.
+
+```
+[code-review] > /context show
+
+Agent (code-review)
+  - data-model/* /{project directory}/kiro-cli/workshop/customer-survey-app/data-model/database_schema.yaml
+  - .kiro/steering/**/*.md /{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/steering/ip.md
+/{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/steering/python-dev.md
+/{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/steering/review-stds.md
+  - .kiro/prompts/reviewer.md /{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/prompts/reviewer.md
+
+Session (temporary)
+  <none>
+
+5 matched files in use
+- /{project directory}/kiro-cli/workshop/customer-survey-app/data-model/database_schema.yaml (0.3% of context window)
+- /{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/steering/python-dev.md (0.2% of context window)
+- /{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/steering/ip.md (0.0% of context window)
+- /{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/prompts/reviewer.md (0.3% of context window)
+- /{project directory}/kiro-cli/workshop/customer-survey-app/.kiro/steering/review-stds.md (0.1% of context window)
+```
+
+Run the following prompt, where we have simplified this and now ask Kiro to use the existing persona of a code reviewer, but review against a specific context - in this case the document we have just added.
+
+```
+ Review the Python code in the project workspace. Review this against the review-stds.md doc
+```
+
+Review the output. Here is a snippet and the final report that is generated when this is completed:
+
+```
+> I've completed the code review against the standards defined in review-stds.md. Here's what I found:
+
+## Key Findings:
+
+✅ Compliant Areas:
+- Naming conventions are properly followed (snake_case for functions/variables, PascalCase for classes)
+- File headers with SPDX and copyright information are correctly applied
+- Exception handling uses specific types appropriately
+
+❌ Non-Compliant Areas:
+- **Missing detailed docstrings**: The main issue is that while functions have basic docstrings, they lack the required detailed format with sample input and expected output
+- All model classes (User, Survey, SurveyOption, SurveyResponse) need comprehensive docstrings
+- All route functions need enhanced docstrings with request/response examples
+
+The review document has been saved as REVIEW-DEV.md in your project root. The codebase is well-structured but needs docstring enhancements to fully comply with your
+organization's coding standards.
+```
+
+We can see that it has:
+
+* create a new report for us that is specified in the steering document
+* used the review-stds.md steering doc as the baseline for the review
+* provided us with a breakdown of how well the current code base conforms to this
+
+At this point we could ask Kiro to remediate the code and re-review - but we will skip that and move to the next lab.
+
+---
+
 ## Reviewing changes
 
 In the previous lab we looked at reviewing the entire project, but we can also apply the same approach to assessing just the changes we have made since the last commit. In this next lab we are going to build from the previous example, and show how Kiro CLI can work with git diffs to narrow down your review focus.
@@ -734,7 +802,7 @@ Kiro CLI will parse this and then invoke the ASH tool. We did not modify the per
 > I'll run an ASH security scan on the src folder and analyze the results for you.
 Running tool run_ash_scan with the param (from mcp server: ash)
  ⋮  {
- ⋮    "source_dir": "/Users/ricsue/kiro-cli/workshop/customer-survey-app/src",
+ ⋮    "source_dir": "/{project directory}/kiro-cli/workshop/customer-survey-app/src",
  ⋮    "severity_threshold": "MEDIUM",
  ⋮    "clean_output": true
  ⋮  }
