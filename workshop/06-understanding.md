@@ -1,6 +1,8 @@
 ![Kiro CLI header](/images/kiro-workshop-header.png)
 
-## Understanding Codebases
+# Understanding Codebases
+
+## Overview
 
 Coming soon
 

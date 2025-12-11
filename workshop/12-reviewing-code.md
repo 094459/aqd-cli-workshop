@@ -1,9 +1,6 @@
 ![Kiro CLI header](/images/kiro-workshop-header.png)
 
-**Todo**
-
-add a sample repo which will be used in this and other labs - update link 
-
+# Reviewing Code lab
 
 ## Overview
 
@@ -42,7 +39,7 @@ git clone https://github.com/094459/kiro-cli-workshop-customer-survey-app.git
 cd kiro-cli-workshop-customer-survey-app
 ```
 
-You will now be in the customer survey demo app. Skip the next task.
+You will now be in the customer survey demo app. **Skip the next task - your project will already be using git for version control**
 
 
 **Task-02**

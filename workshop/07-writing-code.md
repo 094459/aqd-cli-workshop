@@ -1,5 +1,7 @@
 ![Kiro CLI header](/images/kiro-workshop-header.png)
 
+# Writing Code Lab
+
 ## Overview
 
 We are going to put in practice some of the techniques we have learned and use them to build an application. In the first part of this lab we are going to build a simple application to show how good Kiro CLI is at generating code. We will share good practices that you should think about as you look to use Kiro CLI in your day to day workflow.

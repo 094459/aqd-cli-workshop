@@ -1,9 +1,5 @@
 ![Kiro CLI header](/images/kiro-workshop-header.png)
 
-# Building with APIs
+# Building in the Clouds
 
 ## Overview
-
-Coming soon
-
-
