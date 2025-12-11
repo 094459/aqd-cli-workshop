@@ -909,8 +909,6 @@ In the last few labs we have seen both how Kiro CLI can help with pair programmi
 
 ### Reviewing code for accessibility
 
-*If you did the [Writing Code lab](/workshop/07-writing-code.md) then you will have already used this MCP server so you can skip this lab.*
-
 There are thousands of MCP servers out there, that provide many other review capabilities. One such MCP server is the A11y MCP server that provides a way for you to scan and generate reports on how accessible your application is. 
 
 **Task-10**
