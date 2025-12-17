@@ -99,14 +99,6 @@ In this lab we will take a look at how you can use Kiro CLI to review your proje
 
 ---
 
-## Debugging
-
-When you write code, you are going to encounter problems. As good as Kiro is at writing code, issues will come up and need your help to fix. In this lab we will look at effective debugging and troubleshooting techniques when using Kiro CLI.
-
-[Follow this link](workshop/09-debugging.md) dive into this lab.
-
----
-
 ## Automation
 
 In this lab we are going to look at automation use cases, exploring some of the ways you can use Kiro CLI in your day to day activities.
@@ -120,6 +112,14 @@ In this lab we are going to look at automation use cases, exploring some of the 
 In this lab we will explore how we can use Kiro CLI to help with documentation tasks. Beyond just documenting the project you are working on, you will see how you can use it to get a better understanding of any code base you want to work with.
 
 [Follow this link](workshop/06-understanding.md) dive into this lab.
+
+---
+
+## Debugging
+
+When you write code, you are going to encounter problems. As good as Kiro is at writing code, issues will come up and need your help to fix. In this lab we will look at effective debugging and troubleshooting techniques when using Kiro CLI.
+
+[Follow this link](workshop/09-debugging.md) dive into this lab.
 
 ---
 
