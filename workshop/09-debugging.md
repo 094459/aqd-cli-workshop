@@ -2,6 +2,8 @@
 
 # Debugging and Troubleshooting with Kiro CLI
 
+<work in progress>
+
 Did you know that according to [getdx.com](https://getdx.com/guide/ai-assisted-engineering/)(signup required), debugging issues with code is the top use case of AI coding assistants. In this lab we will look at how to use Kiro CLI to debug and troubleshoot issues.
 
 ## Overview
