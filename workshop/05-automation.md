@@ -1,6 +1,6 @@
 ![Kiro CLI header](/images/kiro-workshop-header.png)
 
-# Automation Lab
+# Automating developer tasks
 
 In the previous labs ([Writing Code](/workshop/07-writing-code.md) and [Reviewing Code](/workshop/12-reviewing-code.md)) we built and reviewed a simple application using Kiro CLI. In this lab we are going to look at how we can use Kiro CLI to automate some of the developer tasks you might do once you have got to the stage where you are happy to ship your code.
 
@@ -9,6 +9,7 @@ You are going to learn:
 * how to use Kiro CLI to package the application as a container image
 * creating automation scripts using Kiro CLI that automate the package and building steps
 * see how we can use Kiro CLI to automate the package and building of our application using GitHub actions
+* automation using custom hooks
 
 In addition to the tools you have already been using throughout these labs, you will also need to install and configure the following tool for your environment:
 
@@ -20,13 +21,9 @@ If you don't want to use GitHub then you can complete the first part of this lab
 
 ## Overview
 
-In this first lab we are going to take the application we created (customer survey app) and package this up so that it will run in a container. Before we do that, we are going to need to make a few changes to our code, specifically, how it starts. In previous labs, when we have started the application you might have noticed the following message appear:
+In this tutorial we are going to start by showing some of the capabilities within Kiro CLI that help with automation - both automating how you set the tool up, as well as automating some of the developer tasks.
 
-```
-WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
-```
-
-We are going to ask Kiro CLI to update the project so that it will run with WSGI, and more specifically gunicorn which is a well known approach to doing this.
+Once we have finished going through those, we are going to take the application we created (customer survey app) and package this up so that it will run in a container. We will need to need to make a few changes to our code.
 
 ---
 
@@ -60,8 +57,15 @@ Your project workspace (kiro-cli-workshop-customer-survey-app) is now ready. Thr
 
 ## Using Kiro CLI to make this application ready for production
 
-In this lab we are going to configure our Flask application to use Gunicorn, a common approach for running Flask applications in production. We need to do this to make sure that when we package up the application within the container, the application is able to run properly. You might have noticed that our current application is bound to a local port (127.0.0.1:5000) which is fine for local development, but would not work very well in a container.
+In previous labs you might have noticed the following message appear when you started the customer survey application:
 
+```
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+```
+
+We are going to ask Kiro CLI to update the project so that it will run with WSGI, and more specifically gunicorn which is a well known approach to doing this. We are going to configure our Flask application to use Gunicorn, a common approach for running Flask applications in production. We need to do this to make sure that when we package up the application within the container, the application is able to run properly. You might have noticed that our current application is bound to a local port (127.0.0.1:5000) which is fine for local development, but would not work very well in a container.
+
+---
 
 **Task-02**
 
@@ -532,6 +536,55 @@ finch run -p 8000:8000 ghcr.io/094459/kiro-customer-survey:44c585e9b2fbfecdb56d9
 When I opened up my local browser, I can now see that I have the new features in the application.
 
 ![new features up and running](/images/updated-app.png)
+
+---
+
+### Automating Kiro CLI configuration
+
+Before we finish this section, I want to cover one last aspect of automation - how you automate your Kiro CLI setup. As you have been running through these labs, you will have been creating custom agents (a json configuration file), creating steering documents (markdown docs which we have copied from a GitHub repo). For the purpose of the lab, it is important that we do this so you can walk through the process. But as you start to move beyond the basics, you will want to automate your setup.
+
+In the [Advanced Topics](/workshop/04-advanced-topics.md) you looked at [Context Hooks](https://kiro.dev/docs/cli/hooks/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el). Go back and review that section again before proceeding.
+
+Context Hooks provide a powerful automation primitive that you should explore as you look to take your automation tasks to the next level. For example, one of the things I have setup when I create custom agents is to automatically pull down some steering documents that I always use:
+
+```
+{
+  "name": "my-dev",
+  "description": "Python custom agent",
+  "prompt": "You are an experienced Python 3 software developer.",
+  "mcpServers": {},
+  "tools": [
+    "*"
+  ],
+  "toolAliases": {},
+  "allowedTools": [],
+  "resources": [
+    "file://AGENTS.md",
+    "file://.kiro/steering/**/*.md"
+  ],
+  "hooks": {"agentSpawn": [
+      {
+        "command": "cd .kiro/steering && wget -N https://raw.githubusercontent.com/094459/aqd-cli-workshop/refs/heads/main/resources/python-dev.md && wget -N https://raw.githubusercontent.com/094459/aqd-cli-workshop/refs/heads/main/resources/ip.md"
+      }
+    ]
+  },
+  "toolsSettings": {},
+  "useLegacyMcpJson": false,
+  "model": null
+}
+```
+
+When I start Kiro CLI, this triggers the agentSpawn event which then runs these commands to copy some steering documents down to my local global steering files. I will always have the latest version as long as I keep the version in source control up to date.
+
+Context hooks work at other events too - before and after tools are used for example. 
+
+* agentSpawn - when Kiro CLI starts
+* UserPromptSubmit - after every prompt that you enter in Kiro CLI
+* Stop - at the end of processing a given prompt
+* PreToolUse - before Kiro CLI uses a tool (which you define)
+* PostToolUse - after Kiro CLI uses a tool (again, which you have defined)
+
+Explore the [Advanced Topics](/workshop/04-advanced-topics.md) section again on how to use these.
 
 ---
 

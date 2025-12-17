@@ -91,7 +91,7 @@ If you are interested in more hands on tutorials on how to use AI coding assista
 
 ---
 
-## Reviewing your code with Kiro CLI
+## Reviewing code
 
 In this lab we will take a look at how you can use Kiro CLI to review your project. Whether this is using Kiro CLI to help you review code, run third party scanning and review tools more efficiently, we can use Kiro CLI to be our second pair of eyes. We are going to build from the previous lab, although you can follow along with your own projects if you prefer. 
 
@@ -107,28 +107,27 @@ When you write code, you are going to encounter problems. As good as Kiro is at 
 
 ---
 
-## Building with APIs 
-
-In this lab we are going to dive into how to use Kiro CLI to work with APIs - this lab will provide you some ideas of how you can build using existing APIs, and build new APIs.
-
-[Follow this link](/workshop/11-building-with-apis.md) to get started.
-
----
-
 ## Automation
 
-In this lab we are going to look at sysadmin and automation use cases, exploring some of the ways you can use Kiro CLI in your day to day activities.
+In this lab we are going to look at automation use cases, exploring some of the ways you can use Kiro CLI in your day to day activities.
 
 [Follow this link](workshop/05-automation.md) to start diving into automation.
 
 ---
 
-## Understanding Codebases
+## Documenting Codebases
 
-In this lab we will explore how we can use Kiro CLI to help us get up to speed quickly with codebases, and understand the applications or code we are working with.
+In this lab we will explore how we can use Kiro CLI to help with documentation tasks. Beyond just documenting the project you are working on, you will see how you can use it to get a better understanding of any code base you want to work with.
 
 [Follow this link](workshop/06-understanding.md) dive into this lab.
 
+---
+
+## Building with APIs 
+
+In this lab we are going to dive into how to use Kiro CLI to work with APIs - this lab will provide you some ideas of how you can build using existing APIs, and build new APIs.
+
+[Follow this link](/workshop/11-building-with-apis.md) to get started.
 
 ---
 

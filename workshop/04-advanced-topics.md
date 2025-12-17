@@ -504,20 +504,18 @@ replace the contents of your custom agent with the following:
 
 ```
 {
-  "$schema": "https://raw.githubusercontent.com/aws/amazon-q-developer-cli/refs/heads/main/schemas/agent-v1.json",
-  "name": "python-developer",
-  "description": "",
-  "prompt": null,
+  "name": "java-dev",
+  "description": "A custom agent that provides Java Spring Boot developer guidance for using Spring Boot v3.x",
+  "prompt": "file://../shared/springboot.md",
   "mcpServers": {},
   "tools": [
-    "read",
-    "write",
-    "shell"
+    "*"
   ],
   "toolAliases": {},
   "allowedTools": [],
   "resources": [
-    "file://.amazonq/rules/**/*.md"
+    "file://AGENTS.md",
+    "file://README.md"
   ],
   "hooks": {},
   "toolsSettings": {

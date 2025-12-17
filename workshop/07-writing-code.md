@@ -46,7 +46,7 @@ After saving these files, you should something that looks like the following in 
         └── python-dev.md
 ```
 
-Not very exciting yet!
+Take some time to review this file - what is in it and how it is structured. I know this might not be very exciting, but these documents are super important.
 
 Whilst this file exists, we need to make sure that our Kiro CLI session uses this. We will do that in the next lab.
 
@@ -175,7 +175,15 @@ We have successfully created our custom agent, and configured some local resourc
 
 When writing code, providing a data model as context is a useful way to ensure that the code generated has a good baseline to work from.
 
-Exit your Kiro CLI session, and create a new directory called "data model" in the current project directory, and then copy the [data model from the resources directory](/resources/database_schema.yaml) into this directory.
+Exit your Kiro CLI session, and create a new directory called "data model" in the current project directory, and then copy the [data model from the resources directory](/resources/database_schema.yaml) into this directory using the following command:
+
+```
+mkdir data-model
+cd data-model
+wget https://raw.githubusercontent.com/094459/aqd-cli-workshop/refs/heads/main/resources/database_schema.yaml
+cd ..
+
+```
 
 You should now have the following directory layout.
 
@@ -234,7 +242,7 @@ Build a simple Customer Survey application.
 - When Users are viewing the Dashboard, any available Customer Surveys will provide a link that can be shared so people can submit feedback on a specific survey
 - Provide a simple web design that can be updated easily using CSS
 - Ensure you review the data model when building the application
-- Ensure the database is initialised properly
+- Ensure the database is initialized properly
 ```
 
 When using Kiro CLI with a complex prompt like this, you will find it easier to use the "/editor" command. Before we do that though, we need to think about how we can use Kiro CLI to improve our initial prompt. Instead of add the above as a prompt, use the following:
@@ -252,7 +260,7 @@ Build a simple Customer Survey application.
 - When Users are viewing the Dashboard, any available Customer Surveys will provide a link that can be shared so people can submit feedback on a specific survey
 - Provide a simple web design that can be updated easily using CSS
 - Ensure you review the data model when building the application
-- Ensure the database is initialised properly
+- Ensure the database is initialized properly
 ```
 
 From your "[customer-survey] >" prompt, paste that text into the prompt and review the output. What do you notice?
@@ -355,7 +363,13 @@ Now try running the "/tools" command again. What has changed? You should see tha
 
 Before we move to getting Kiro CLI to write the code, we are going to setup a new steering file to add some copyright headers to the code we generate. You might be thinking why this was not included in the steering document we initially created. There are no hard rules, and good practices are still emerging. One practice that seems to be effective is to try and split steering documents by domain and scope. The first steering file defined how we wanted the code written, and was focused towards Python things. Adding copyright headers is something that is broader than Python, and might potentially be different from project to project, so putting it into its own steering file makes sense.
 
-Create the following new document in your ".kiro/steering" directory, and call it ip.md. Add the contents of the [ip.md](/resources/ip.md) file in the resources folder.
+Create the following new document in your ".kiro/steering" directory, and call it ip.md. Add the contents of the [ip.md](/resources/ip.md) file in the resources folder. We can simplify this by using the following command:
+
+```
+cd .kiro/steering
+wget https://raw.githubusercontent.com/094459/aqd-cli-workshop/refs/heads/main/resources/ip.md
+cd ../..
+```
 
 Your directory structure should look like this:
 
@@ -415,7 +429,136 @@ It will take 4-5 minutes to run some commands (to install libraries and dependen
 
 ---
 
+Kiro CLI provides [Language Server Protocols](https://kiro.dev/docs/cli/code-intelligence/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) that allow it to have a better understanding of code within your project. In this next lab we are going to see how easy it is to enable this. Once enabled, you will be able to  search symbols, find references, navigate definitions, rename across files, and get diagnostics through natural language queries.
+
 **Task-08**
+
+To use this feature we need to make sure that we have a suitable LSP installed. Looking at the [Kiro documentation](https://kiro.dev/docs/cli/code-intelligence/#installing-language-servers?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) we can see that we need to install pyright on our system.
+
+Exit your current Kiro CLI session, and from the terminal run the following command:
+
+```
+pip install pyright
+```
+
+With that installed, from the terminal start Kiro CLI session with:
+
+```
+kiro-cli --agent customer-survey
+```
+
+and at the "[customer-survey]>" prompt enter:
+
+```
+/code --help
+```
+
+This will show you the list of available options with this feature. We need to initialize the current project workspace in order for Kiro to be able to make use of it, so we do that using:
+
+```
+/code init
+```
+
+which should generate the following output:
+
+```
+✓ Workspace initialized
+
+Workspace: /Users/ricsue/kiro-cli/kcs
+Detected Languages: ["python"]
+Project Markers: ["pyproject.toml"]
+
+Available LSPs:
+○ clangd (cpp) - available
+○ gopls (go) - not installed
+○ jdtls (java) - not installed
+✓ pyright (python) - initialized (1.3s)
+○ rust-analyzer (rust) - available
+○ solargraph (ruby) - not installed
+○ typescript-language-server (typescript) - not installed
+
+Configuration can be updated at .kiro/settings/lsp.json
+Learn more at https://kiro.dev/docs/cli/code-intelligence/
+
+
+[customer-survey] λ >
+```
+
+You will also notice that the prompt has changed and now has a "λ" appear - this is a visual cue that your current project space has an LSP configured.
+
+You can check the status of the LSP by running the following command:
+
+```
+[customer-survey] λ > /code status
+
+✓ Workspace initialized
+
+Workspace: /Users/ricsue/kiro-cli/kcs
+Detected Languages: ["python"]
+Project Markers: ["pyproject.toml"]
+
+Available LSPs:
+○ clangd (cpp) - available
+○ gopls (go) - not installed
+○ jdtls (java) - not installed
+✓ pyright (python) - initialized (1.5s)
+○ rust-analyzer (rust) - available
+○ solargraph (ruby) - not installed
+○ typescript-language-server (typescript) - not installed
+
+Configuration can be updated at .kiro/settings/lsp.json
+Learn more at https://kiro.dev/docs/cli/code-intelligence/
+```
+
+Initializing code within our project has made a new tool is made available called "code", which you can see when using "/tools"
+
+```
+[customer-survey] λ > /tools
+
+
+Tool              Permission
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Built-in
+- code            trusted
+- shell           not trusted
+- read            trust working directory
+- write           not trusted
+- introspect      trusted
+- report          not trusted
+- aws             trust read-only commands
+- web_fetch       not trusted
+- web_search      not trusted
+```
+
+We try this out by running the following from your "[customer-survey]>" prompt:
+
+```
+find the User class
+```
+
+You should now see the following:
+
+```
+[customer-survey] λ > find the User class
+
+> I'll search for the User class in your codebase.
+Searching for symbols matching: "User" [type=Class] (using tool: code)
+Allow this action? Use 't' to trust (always allow) this tool for the session. [y/n/t]:
+```
+
+We can see that the new tool has been invoked. Follow through the prompts, responding with "y" as this new capability provides you with details about this particular class.
+
+The LSP will stay configured within your project, even after you exit Kiro CLI. If you want to delete this, then you need to remove the "lsp.json" file which is in the ".kiro/settings" directory.
+
+```
+.kiro
+├── settings
+    └── lsp.json
+```
+
+---
+
+**Task-09**
 
 Now Kiro CLI has created the application code, we need to start it so we can test to make sure it is working. During the previous lab, a README might have been created that explains how to start this application. We will ignore that for the moment, and get Kiro CLI to help us get the app up and running
 
@@ -439,7 +582,7 @@ Stop the application (CTRL + C) before proceeding with the next lab.
 
 ---
 
-**Task-09**
+**Task-10**
 
 Kiro CLI makes it easy to add tests to our project. In this next lab we are going to generate tests for the code we have just created. 
 

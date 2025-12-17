@@ -1,5 +1,12 @@
 ## Tracking changes with this workshop
 
+17th December 2025
+
+- Add Automation and Documentation labs
+- Started Debugging labs
+- Updating Writing Code to use new features introduced in Kiro v1.22 (code-intelligence)
+
+
 10th December 2025
 
 - Added Reviewing Code using Kiro CLI
