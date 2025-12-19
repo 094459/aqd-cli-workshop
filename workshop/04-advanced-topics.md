@@ -971,15 +971,17 @@ If we run the **"/tools"** command, we can see we now have a new tool available 
 Tool              Permission
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Built-in:
-- shell           * trust read-only commands
-- read            * trusted
-- write           * not trusted
-- introspect      * trusted
-- report          * trusted
-- todo            * trusted
-- aws             * trust read-only commands
-- web_fetch       * not trusted
-- web_search      * not trusted
+- shell           trust read-only commands
+- read            trusted
+- write           not trusted
+- glob            trust working directory
+- grep            trust working directory
+- introspect      trusted
+- report          trusted
+- todo            trusted
+- aws             trust read-only commands
+- web_fetch       not trusted
+- web_search      not trusted
 
 ```
 

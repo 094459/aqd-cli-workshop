@@ -133,32 +133,8 @@ kiro-cli -V
 which should produce the following. I run this just post Kiro CLI launch, so by the time you are using this workshop you might have a newer version
 
 ```
-kiro-cli 1.20.0
+kiro-cli 1.23.0
 ```
-
----
-
-### Default MCP Server installed
-
-From v.1.21.0 of Kiro CLI, a default MCP Server is installed (mcp-server-fetch) that provides "web_fetch" and "web_search" tools. Don't worry too much at the moment what these are as we will cover these in later labs. For the time being know that these are configured. The configuration file likes in **".kiro/settings/mcp.json"**
-
-```
-{
-  "mcpServers": {
-    "fetch": {
-      "command": "uvx",
-      "args": [
-        "mcp-server-fetch"
-      ],
-      "env": {},
-      "disabled": false,
-      "autoApprove": []
-    }
-  }
-}%
-```
-
-We will leave this configured for the labs that come later.
 
 
 ---

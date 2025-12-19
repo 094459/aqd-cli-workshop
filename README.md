@@ -123,33 +123,12 @@ When you write code, you are going to encounter problems. As good as Kiro is at 
 
 ---
 
-## Building with APIs 
-
-In this lab we are going to dive into how to use Kiro CLI to work with APIs - this lab will provide you some ideas of how you can build using existing APIs, and build new APIs.
-
-[Follow this link](/workshop/11-building-with-apis.md) to get started.
-
----
-
-## Working with data
-
-Developers spend a lot of time working with data, and so in this lab we explore some of the ways you can use Kiro CLI to help you. Whether it is working with different data formats, generating sample data, or supercharging how you work with SQL, Kiro CLI will transform how you work with data.
-
-[Follow this link](workshop/09-debugging.md) dive into this lab.
-
----
-
 ## Feedback!
 
 Before you go, if you found this tutorial useful/helpful, or have ideas how we can make it better, please please provide some feedback using [this link](https://pulse.aws/survey/1DM5TAZU).
 
+-
 
-
-
-
-
-
-
-
+-
 
 [view changelog](/workshop/changelog.md)

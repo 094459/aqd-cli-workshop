@@ -315,6 +315,8 @@ Built-in
 - shell           not trusted
 - read            not trusted
 - write           not trusted
+- glob            trust working directory
+- grep            trust working directory
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
@@ -464,7 +466,7 @@ which should generate the following output:
 ```
 ✓ Workspace initialized
 
-Workspace: /Users/ricsue/kiro-cli/kcs
+Workspace: /{project workspace}/kiro-cli/kiro-customer-survey
 Detected Languages: ["python"]
 Project Markers: ["pyproject.toml"]
 
@@ -493,7 +495,7 @@ You can check the status of the LSP by running the following command:
 
 ✓ Workspace initialized
 
-Workspace: /Users/ricsue/kiro-cli/kcs
+Workspace: /{project workspace}/kiro-cli/kiro-customer-survey
 Detected Languages: ["python"]
 Project Markers: ["pyproject.toml"]
 
@@ -523,6 +525,8 @@ Built-in
 - shell           not trusted
 - read            trust working directory
 - write           not trusted
+- glob            trust working directory
+- grep            trust working directory
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands

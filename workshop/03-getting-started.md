@@ -192,7 +192,41 @@ You shared an ER diagram for a student enrollment system, and I identified the t
 COURSES, ENROLLMENT) and asked what you'd like me to help you with.
 ```
 
-This is a super handy feature that allows you to maintain your conversation context even if you have to leave your Kiro CLI session.
+This is a super handy feature that allows you to maintain your conversation context even if you have to leave your Kiro CLI session. What if you wanted to pick up from a different chat session, not just the last one you had? Don't worry, Kiro CLI has you covered. The "--list-sessions" command will list all your previous sessions.
+
+```
+kiro-cli chat --list-sessions
+
+Chat sessions for /{program directory}/kiro-cli/:
+
+Chat SessionId: 29b04f37-19de-42b6-b07a-bfcee3c288e6
+  11 seconds ago | show, dont create, me a way in java to display the date at the cli | 1 msgs
+
+Chat SessionId: 0389a798-b52a-45bb-9254-08cd6a8aaa16
+  52 seconds ago | what is your name | 1 msgs
+
+Chat SessionId: 41cd0688-5450-423f-9550-af9c5b710d26
+  21 minutes ago | find the User class | 3 msgs
+
+To delete a session, use: kiro-cli chat --delete-session <SESSION_ID>
+```
+
+This works across all your chat sessions within a given directory. You will see that the command says "Chat sessions for /{program directory}/kiro-cli/", so it displays all the chats that I have initiated from within this project directory. If I switch to a different directory:
+
+```
+kiro-cli chat --list-sessions
+No saved chat sessions for /{project directory}/Projects
+```
+
+You can then use the "--resume-chat" command line switch to resume from a specific chat session, and then you will be able to select using the up and down arrows, which session to resume
+
+```
+kiro-cli chat --resume-picker
+ Select a chat session to resume:
+❯ 4 minutes ago | show, dont create, me a way in java to display the date at the cli | 1 msgs
+  4 minutes ago | what is your name | 1 msgs
+  25 minutes ago | find the User class | 3 msgs
+```
 
 ---
 
@@ -478,6 +512,8 @@ Built-in
 - shell           not trusted
 - read            trust working directory
 - write           not trusted
+- glob            trust working directory
+- grep            trust working directory
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
@@ -486,7 +522,7 @@ Built-in
 
 ```
 
-You will notice that we have one tool that is automatically trusted - **introspect**. We have two tools that are trusted with caveats, with **aws** and **read** constrained to the current working directory and read only commands.We can see writing and executing files (shell) are not trusted. What this means is that if we ask Kiro CLI to do something that wants to use these tools, it is going to prompt us for permission. Lets see this in action. We also have **web_fetch** and **web_search** tools that are disabled by default. 
+You will notice that we have one tool that is automatically trusted - **introspect**. We have four tools that are trusted with caveats, with **aws**, **glob**, **grep**, and **read** constrained to the current working directory and read only commands.We can see writing and executing files (shell) are not trusted. What this means is that if we ask Kiro CLI to do something that wants to use these tools, it is going to prompt us for permission. Lets see this in action. We also have **web_fetch** and **web_search** tools that are disabled by default. 
 
 The number of tools that appears will change based on a number of factors:
 
@@ -520,6 +556,8 @@ Built-in
 - shell           not trusted
 - read            trust working directory
 - write           not trusted
+- glob            trust working directory
+- grep            trust working directory
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
@@ -537,7 +575,7 @@ Enter the following prompt:
 Your output will likely be different to the output below, but the important thing here is that you see that you are being asked for permission to use a specific tool. The tool is mentioned in the first line, and then at the bottom you can see your options.
 
 ```
-I'll create the following file: /Users/ricsue/kiro-cli/workshop/yoda_wisdom.py **(using tool: write)****
+I'll create the following file: /{project directory}/kiro-cli/workshop/yoda_wisdom.py **(using tool: write)****
 Purpose: Create Python script that prompts for name and shares Yoda wisdom
 
 +     1: import random
@@ -854,7 +892,10 @@ When we start Kiro CLI, it defaults to a custom agent configuration (**kiro_defa
 kiro-cli agent list
 
 * kiro_default    (Built-in)
+* kiro_planner    (Built-in)
 ```
+
+> If you are wondering what the **kiro_planner** is, this is used by Kiro when you go into plan mode using /plan - don't worry about this yet!
 
 A custom agent is a json configuration file which we create and then configure for what need (we will see what this looks like in a moment). Once we have created it, we can then use it when we start Kiro CLI.
 
@@ -930,6 +971,7 @@ Which should generate output like the following:
 
 ```
   kiro_default    (Built-in)
+  kiro_planner    (Built-in)
   python-dev      /{your home directory}/{your project directory}/.kiro/agents
 ```
 
@@ -1432,10 +1474,13 @@ You should see something similar to the following:
 [python-dev] > /tools
 
 Tool                      Permission
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔Built-in
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Built-in
 - shell                   not trusted
 - read                    trust working directory
 - write                   not trusted
+- glob                    trust working directory
+- grep                    trust working directory
 - introspect              trusted
 - report                  not trusted
 - aws                     trust read-only commands

@@ -1,5 +1,12 @@
 ## Tracking changes with this workshop
 
+19th December 2025
+
+- Completed debugging lab
+- Updated and cleaned up some typos in other labs
+- Removed API and Data labs (will be introduced in 2026)
+- updated based on Kiro CLI v1.23.0 updates (updated chat resume section, and new tools glob and grep)
+
 17th December 2025
 
 - Add Automation and Documentation labs
