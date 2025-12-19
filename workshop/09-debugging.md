@@ -521,20 +521,253 @@ During debugging you may end up in a situation where you have spent more time th
 
 ---
 
-**Task-xx**
+We are going to put together some of the things we have learned so far and show how we can go through and debug an issue. First we are going to need to generate a problem, so we will do that and then take it from there.
 
+**Task-05**
 
+Exit out of your Kiro session to get back to the prompt. From the terminal we are going to need to "modify" our application so that it breaks.
+
+Edit the app/src/models/database.py file, and change line 14 from
+
+```
+class User(db.Model):
+```
+
+to
+
+```
+class Users(db.Model):
+```
+
+Save the file, and then confirm that the application no longer starts when running "uv run python run.py" (you should see something like this)
+
+```
+ImportError: cannot import name 'User' from 'app.src.models.database' (/{project directory}/kiro-cli/kcs/app/src/models/database.py)
+```
+
+Staying in the terminal, rename the README.md file to ARCH.md
+
+```
+mv README.md ARCH.md
+```
+
+Start Kiro CLI using our code debugging custom agent, using the following:
+
+```
+kiro-cli --agent code-debugger
+```
+
+We enabled the Code Interpreter in an earlier lab, which you can see by the "λ" character. This will provide Kiro information about the code base as and when it is needed.
+
+From the "[code-debugger]>" prompt, check what context you have by using "/context show" - you should have nothing (no matches) in your context.
+
+```
+[code-debugger] λ > /context show
+
+Agent (code-debugger)
+  - AGENTS.md (no matches)
+  - README.md (no matches)
+
+Session (temporary)
+  <none>
+
+No files in the current directory matched the rules above.
+```
+
+We are now going to add the ARCH.md doc to our context. To do this we use the "/context add" command, so run this from your Kiro session:
+
+```
+/context add ARCH.md
+```
+
+which should generate the following:
+
+```
+Added 1 path(s) to context.
+Note: Context modifications via slash command is temporary.
+```
+
+Now lets start debugging this issue. We are going to use some of the good practices we have learned from this section. From your Kiro session, use "/editor" and enter the following prompt:
+
+```
+Please help me debug an issue. WHEN I START the application from the command line (using uv run python run.py), I get an ERROR message:
+
+\```
+ERROR - app.src.app - Error importing routes: cannot import name 'User' from 'app.src.models.database' (/{project directory}/kiro-cli/kcs/app/src/models/database.py)
+CRITICAL - app.src.app - Critical error during application creation: cannot import name 'User' from 'app.src.models.database' (/{project directory}/kiro-cli/kcs/app/src/models/database.py)
+Traceback (most recent call last):
+  File "/{project directory}/kiro-cli/kcs/run.py", line 9, in <module>
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/{project directory}/kiro-cli/kcs/app/src/app.py", line 47, in create_app
+    from .routes import auth, dashboard, surveys
+  File "/{project directory}/kiro-cli/kcs/app/src/routes/auth.py", line 10, in <module>
+    from ..models.database import User
+ImportError: cannot import name 'User' from 'app.src.models.database' (/{project directory}/kiro-cli/kcs/app/src/models/database.py)
+\```
+
+Running this command SHOULD start the application and make it available on port http:127.0.0.1:5001.
+
+Other things you should know:
+- The application has an error log called "app.log".
+- The application design and technical details are in ARCH.log
+- The issue STARTED after I made some changes to the app/src/models/database.py
+
+When considering a FIX, make sure you select a STRONG PREFERENCE to align with the existing architecture and technology defined.
+
+```
+
+Follow the output. Remember how we created a detailed system prompt for our custom agent? You should now see that this is echoed back. This is the output I get, and it should be broadly similar to yours.
+
+```
+> I can see you're dealing with an import error where the User class cannot be imported from app.src.models.database. Let me
+gather some more information to help debug this effectively.
+
+To better understand the root cause, I need to ask a few questions:
+
+1. What specific changes did you make to app/src/models/database.py?
+- Did you rename, delete, or move the User class?
+- Did you modify the class definition or its imports?
+
+2. When exactly did this issue start?
+- Was it immediately after your changes, or after some other action?
+
+3. What was the expected behavior vs. what's happening now?
+- Expected: Application starts successfully on port 5001
+- Actual: Import error preventing startup
+
+Let me first examine the current state of your database.py file and the importing file to see what's missing:
+Reading file: /{project directory}/kiro-cli/kcs/app/src/models/database.py, all lines (using tool: read)
+ ✓ Successfully read 3841 bytes from /{project directory}/kiro-cli/kcs/app/src/models/database.py
+ - Completed in 0.1s
+
+> Now let me check the auth.py file to see exactly what it's trying to import:
+Reading file: /{project directory}/kiro-cli/kcs/app/src/routes/auth.py, from line 8 to 15 (using tool: read)
+ ✓ Successfully read 299 bytes from /{project directory}/kiro-cli/kcs/app/src/routes/auth.py
+ - Completed in 0.1s
+
+> Root Cause Identified:
+
+The issue is clear now. In your database.py file, you have a class named Users (plural), but your auth.py file is trying to
+import User (singular). This mismatch happened when you made changes to the database.py file.
+
+Expected vs. Actual:
+- **Expected:** Import User class from database module
+- **Actual:** The class is named Users, so the import fails
+
+The Fix:
+
+You have two options:
+
+1. Option 1: Rename the class from Users to User in database.py (recommended for consistency)
+2. Option 2: Update all import statements to use Users instead of User
+
+Given the Flask/SQLAlchemy convention typically uses singular model names, I recommend Option 1.
+
+Would you like me to apply the fix by renaming Users to User in your database.py file? This will maintain consistency with your
+existing import statements and follow standard naming conventions.
+ ▸ Credits: 0.15 • Time: 13s
+```
+
+As you can see, it has not fixed the issue but is asking you for next steps. We are not going to fix this at the moment, as we are going to see what happens if we don't provide the detailed prompt.
+
+From your Kiro session, at the "[code-debugger]>" prompt, use the "/clear" to clear the context window.
+
+```
+/clear
+```
+
+which will prompt you to confirm you want to clear
+
+```
+Are you sure? This will erase the conversation history and context from hooks for the current session. [y/n]:
+```
+
+Answer "Y", and you should get a "Conversation history cleared." message. From the prompt now type:
+
+```
+Help me debug an issue with the app
+```
+
+A much shorter prompt, and one that perhaps you might have used in the past. What you should notice is that you will now be prompted to supply the information that we had originally provided in the prompt. This is the output that it generated for me.
+
+```
+help me debug an issue with the app
+
+> I'm Orac, and I'll help you debug this issue. To get to the root cause, I need some key information:
+
+Tell me about the error:
+- What exactly happens when you encounter this issue? What were you doing when it occurred?
+- What specific error messages or symptoms do you see?
+
+Context questions:
+- When did this issue start happening?
+- Did anything change recently? (code updates, dependencies, environment changes, etc.)
+- What's the expected vs. actual behavior? Be specific - for example, "I expected JSON response, but got HTML" or "I expected the
+function to return X, but it returns Y"
+
+Once I understand these details, I can help identify the root cause and suggest a fix.
+ ▸ Credits: 0.04 • Time: 5s
+```
+
+Using the information from the original prompt, provide answers and follow the debugging conversation. It should come to the same conclusion, through a different route. This is the output I got.
+
+```
+
+[code-debugger] λ > The problem starts when starting the app. It should start and then start listening on port 5001 so I can access it via a web browser. It started happening after I made a change to the database.py file. The app should just start when i run "uv run python run.py" but its generated this error - ImportError: cannot import name 'User' from 'app.src.models.database' (/{project folder}/kiro-cli/kcs/app/src/models/database.py)
+
+> Perfect! This is a clear import error. The application is trying to import the User class from app.src.models.database but can'
+t find it.
+
+Since you mentioned you made changes to the database.py file, let me examine the current state of that file to see what's missing
+or incorrect.
+Reading file: /{project folder}/kiro-cli/kcs/app/src/models/database.py, all lines (using tool: read)
+ ✓ Successfully read 3841 bytes from /{project folder}/kiro-cli/kcs/app/src/models/database.py
+ - Completed in 0.1s
+
+> Found the issue! The class is named Users (plural) in your database.py file, but the import is trying to import User (singular)
+.
+
+Let me check where this import is happening to confirm:
+Searching for: from.*User.*import|import.*User in /{project folder}/kiro-cli/kcs (*.py) (using tool: grep) - Completed in 0.40s
+
+> The problem is in /{project folder}/kiro-cli/kcs/app/src/routes/auth.py - it's trying to import User but your model class is named
+Users.
+
+Root cause: Class name mismatch between the model definition (Users) and the import statement (User).
+
+Fix options:
+1. Change the class name from Users to User in database.py
+2. Change the import statement to import Users instead of User
+
+Option 1 is typically preferred since model names are usually singular in most conventions.
+
+Would you like me to go ahead and apply the fix by changing Users to User in the database.py file?
+```
+
+Complete the fix by asking Kiro to fix using Option 1. Follow it through and once complete, open up a terminal session to make sure that you can now start the application.
 
 ---
 
-## 9. Other kinds of debugging
+## 9. Other ways Kiro can help you
 
-Deciphering Vague Errors: Turning a cryptic error code into a plain-English explanation.
-Spotting "Code Blindness": Identifying obvious typos or syntax errors that you've stared at so long you can no longer see them.
-Tracing Complex Logic: Walking through a function's execution path to find where the reasoning went wrong.
+So far we have looked specifically at how you can use Kiro for helping debug issues, but you can also provide help with other sort of issues you have. Here are just a few ideas of how I have used Kiro, but this only scratches the surface of what is possible.
 
- "Rubber Ducking" with AI:
-Classic "rubber duck debugging" involves explaining your code, line-by-line, to an inanimate object. The act of verbalizing your logic often reveals the flaw. AI is the ultimate rubber duck because it can talk back.
+### Deciphering error messages
+
+How many times have you seen errors in your logs or compilation and needed help to understand it. As it turns out, Kiro CLI is great at turning a cryptic error code into a plain English explanation.
+
+### Spotting typos
+
+Probably the most common way I currently get help from Kiro CLI is to help me spot subtle typos in the code - whether its a variable name that is slightly wrong, or messed up parenthesis, Kiro is really effective at helping to highlight potential issues like this.
+
+### Walkthrough your code
+
+Not sure how some function or part of your codebase works? No problem, you can use Kiro as a step debugger and ask it to give you a step by step commentary on how your code works. What is great about this is that you can stop at any point and introspect and dive deeper. This can be very helpful when you are debugging issues and you have identified where the issue is, and you now need to walk through a function's execution path to find where the reasoning went wrong.
+
+### Rubber Ducking
+
+According to Wikipedia [Rubber Ducking](https://en.wikipedia.org/wiki/Rubber_duck_debugging) is a classic approach to debugging and troubleshooting that involves explaining your code, line-by-line, to an inanimate object. The act of verbalizing your logic often reveals the flaw. You can use Kiro as the ultimate rubber duck because it can talk back.
 
 Prompt: "I am trying to debug this complex function. I'm going to explain my thought process for how it's supposed to work. Please listen to my explanation and point out any logical fallacies, incorrect assumptions, or potential edge cases I might be missing."
 
