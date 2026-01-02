@@ -517,12 +517,13 @@ Built-in
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
+- subagent        not trusted
 - web_fetch       not trusted
 - web_search      not trusted
 
 ```
 
-You will notice that we have one tool that is automatically trusted - **introspect**. We have four tools that are trusted with caveats, with **aws**, **glob**, **grep**, and **read** constrained to the current working directory and read only commands.We can see writing and executing files (shell) are not trusted. What this means is that if we ask Kiro CLI to do something that wants to use these tools, it is going to prompt us for permission. Lets see this in action. We also have **web_fetch** and **web_search** tools that are disabled by default. 
+You will notice that we have one tool that is automatically trusted - **introspect**. We have four tools that are trusted with caveats, with **aws**, **glob**, **grep**, and **read** constrained to the current working directory and read only commands.We can see writing and executing files (shell) are not trusted. What this means is that if we ask Kiro CLI to do something that wants to use these tools, it is going to prompt us for permission. Lets see this in action. We also have **subagent**, **web_fetch** and **web_search** tools that are disabled by default. 
 
 The number of tools that appears will change based on a number of factors:
 
@@ -561,6 +562,7 @@ Built-in
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
+- subagent        not trusted
 - web_fetch       not trusted
 - web_search      not trusted
 
@@ -1484,6 +1486,7 @@ Built-in
 - introspect              trusted
 - report                  not trusted
 - aws                     trust read-only commands
+- subagent                not trusted
 - web_fetch               not trusted
 - web_search              not trusted
 
@@ -1756,6 +1759,144 @@ When you are using Kiro CLI, if you now start an instance of Kiro CLI with a cus
 ```
 
 You will know that MCP has been disabled at the org level.
+
+---
+
+## Built-in Agents
+
+You have looked at custom agents so far in this lab, but there are some built in agents that you can also use for specific tasks. 
+
+### Planning Agent
+
+The [Plan agent](https://kiro.dev/docs/cli/chat/planning-agent/) is a specialized built-in agent that helps transform ideas into structured implementation plans. It guides you through requirements gathering, research, and creates detailed task breakdowns before switching to execution mode.
+
+There are two ways you can start the Plan Agent.
+
+From your Kiro CLI ">" prompt, you can use the **"/plan"** command. You will notice that the prompt will change to "[plan]" to give you a visual cue that you are now in plan model.
+
+Alternatively you can hold SHIFT and TAB together, which will switch you into the the Plan Agent. You will see the following text appear:
+
+```
+>
+Switching to the Kiro [plan] agent.
+Transform any idea into fully working code. What do you want to build today?
+```
+
+To exit plan mode you hold SHIFT and TAB together again which will exit plan mode (and again, you will notice that your prompt will change back to ">")
+
+
+In later labs you will use this, so for the time being just be aware that this 
+
+### Subagents
+
+For complex tasks, you might want Kiro to run a number of activities in parallel. [Subagents](https://kiro.dev/docs/cli/chat/subagents/) are specialized agents that let you do this easily, and will help you autonomously execute complex tasks. It does this by understanding from your prompt whether you want to run a task using the subagent.
+
+By default, Kiro will use a default subagent that can handle general purpose tasks. However, you can also specify your own custom agents, although there are caveats. When you use custom agents, subagents will inherit the permissions and configuration of the tools defined. Currently, there are some constraints you need to be aware of when using custom agents. Only "read", "write", and "shell" tools are supported, together with MCP tools. This will change over time however, so keep an eye out on the changelog. 
+
+**Task-22**
+
+To see this in action, we can try a simple example. In a completely new terminal window, start Kiro CLI and from the ">" prompt, type the following prompt:
+
+```
+Run four background tasks to explore four different GitHub libraries for QR code generation and report back to me which the best are in terms of project status (stars and activity)
+```
+
+You will notice the following in the response:
+
+```
+Invoking 4 subagents in parallel (using tool: subagent)
+Allow this action? Use 't' to trust (always allow) this tool for the session. [y/n/t]:
+```
+
+We can see that the subagent tool is being invoked, and that it wants to run four subagents in parallel. Respond with "t" and you should see something that resembles the following:
+
+```
+> t
+
+   ᗢ kiro_default: Research the qrcode.js JavaScript library on GitHub. Find the
+ → ↳ tool call shell ended
+
+   ᗢ kiro_default: Research the qr-code-styling JavaScript library on GitHub (th
+   ↳ tool call shell ended
+
+   ᗢ kiro_default: Research the node-qrcode JavaScript library on GitHub. Find t
+   ↳ thinking...
+
+   ᗢ kiro_default: Research the qrious JavaScript QR code library on GitHub. Fin
+   ↳ tool call shell ended
+
+  Controls: j/↓ down k/↑ up o toggle convo ^+C interrupt
+```
+
+We can see that we now have four parallel tasks running. We can use the UP/DOWN arrow keys to move the arrow up and down against each of these tasks, and then use the "o" to step into the running conversation. When you do that you will see something like this:
+
+```
+> t
+
+   ᗧ kiro_default: Research the qrcode.js JavaScript library on GitHub. Find the
+   ↳ tool call shell ended
+
+   ✓ kiro_default: Research the qr-code-styling JavaScript library on GitHub (th
+   ↳ completed
+
+  ┌ ᗧ kiro_default: Research the node-qrcode JavaScript library on GitHub. Find┐
+ →│>  Let me check the issues and pull requests:                               │
+  │                                                                            │
+  │>  calling tool shell                                                       │
+  │                                                                            │
+  │>  Let me get the NPM download statistics:                                  │
+  │                                                                            │
+  │>  calling tool shell                                                       │
+  │                                                                            │
+  └────────────────────────────────────────────────────────────────────────────┘
+   ᗧ kiro_default: Research the qrious JavaScript QR code library on GitHub. Fin
+   ↳ tool call shell ended
+
+  Controls: j/↓ down k/↑ up o toggle convo ^+C interrupt
+```
+
+You can also escape at any time using CTRL+C.
+
+Leave this running for a few seconds, and you should see that the parallel tasks come together, orchestrated by the subagent to generate your response. This is what I got, yours might be slightly different.
+
+```
+> Based on the research from 4 subagents, here's the comparison of QR code generation libraries:
+
+## Library Comparison Results
+
+### 🥇 soldair/node-qrcode - WINNER
+- **Stars**: 8,015 ⭐
+- **Activity**: Active (last push Aug 2024)
+- **Downloads**: 19.3M monthly on NPM
+- **Health**: ✅ Mature, stable, widely adopted
+- **Age**: 14+ years, proven reliability
+
+### 🥈 kozakdenys/qr-code-styling - CURRENT PROJECT
+- **Stars**: 2,647 ⭐
+- **Activity**: Very active (last push Jan 1, 2026)
+- **Recent releases**: 3 in early 2025
+- **Health**: ✅ Well-maintained, TypeScript-based
+- **Features**: Advanced styling options (your current choice)
+
+### 🥉 neocotic/qrious
+- **Stars**: 1,622 ⭐
+- **Activity**: ⚠️ Stagnant (no commits since 2017)
+- **Health**: Concerning - 7+ years without updates
+- **Status**: Likely abandoned
+
+### 🔻 janantala/qrcode.js
+- **Stars**: 46 ⭐
+- **Activity**: ❌ Dead (last commit 2014)
+- **Health**: Abandoned project
+
+## Recommendation
+
+Use qr-code-styling - it's actively maintained with recent updates and offers the advanced styling features
+your project might need. If you need maximum stability and adoption, node-qrcode is the industry standard with massive
+usage.
+```
+
+---
 
 ### Supporting Resources
 

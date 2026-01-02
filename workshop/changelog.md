@@ -1,5 +1,11 @@
 ## Tracking changes with this workshop
 
+2nd January 2026
+
+- reviewed against Kiro CLI v1.23.1 and updated /tools
+- added new subagent section in getting started (task-22)
+- added new plan agent section
+
 19th December 2025
 
 - Completed debugging lab

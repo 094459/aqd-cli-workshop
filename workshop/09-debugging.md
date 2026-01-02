@@ -232,6 +232,7 @@ Built-in
 - introspect      trusted
 - report          not trusted
 - aws             trust read-only commands
+- subagent        not trusted
 - web_fetch       not trusted
 - web_search      not trusted
 ```
