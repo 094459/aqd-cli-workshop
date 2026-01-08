@@ -543,7 +543,7 @@ When I opened up my local browser, I can now see that I have the new features in
 
 Before we finish this section, I want to cover one last aspect of automation - how you automate your Kiro CLI setup. As you have been running through these labs, you will have been creating custom agents (a json configuration file), creating steering documents (markdown docs which we have copied from a GitHub repo). For the purpose of the lab, it is important that we do this so you can walk through the process. But as you start to move beyond the basics, you will want to automate your setup.
 
-In the [Advanced Topics](/workshop/04-advanced-topics.md) you looked at [Context Hooks](https://kiro.dev/docs/cli/hooks/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el). Go back and review that section again before proceeding.
+In the [Advanced Topics](/workshop/04-advanced-topics.md) you looked at [Context Hooks](https://kiro.dev/docs/cli/hooks/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el). Go back and review that section again before proceeding.
 
 Context Hooks provide a powerful automation primitive that you should explore as you look to take your automation tasks to the next level. For example, one of the things I have setup when I create custom agents is to automatically pull down some steering documents that I always use:
 

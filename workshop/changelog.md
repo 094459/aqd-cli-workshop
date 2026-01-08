@@ -79,7 +79,7 @@
 28th August 2025
 
 - added a Rules section and update custom agent to follow rules nomlecature
-- added new resource - [Mastering Amazon Q Developer with Rules](https://aws.amazon.com/blogs/devops/mastering-amazon-q-developer-with-rules/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+- added new resource - [Mastering Amazon Q Developer with Rules](https://aws.amazon.com/blogs/devops/mastering-amazon-q-developer-with-rules/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 - update and change from "steering" to "rules"
 
 23rd August 2025

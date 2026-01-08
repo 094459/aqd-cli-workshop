@@ -130,7 +130,7 @@ Before you proceed with debugging, you should:
 
 I cannot tell you how important having a solid understanding of your project and code base is when debugging and troubleshooting.
 
-Whilst it is important that you know about your code and project, we can also provide Kiro with some help. The [Code Intelligence](https://kiro.dev/docs/cli/code-intelligence/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) feature integrates Language Server Protocol (LSP) into Kiro CLI to enable semantic understanding of your codebase for the Kiro agent. This can be a useful tool that will help Kiro as it works in troubleshooting.
+Whilst it is important that you know about your code and project, we can also provide Kiro with some help. The [Code Intelligence](https://kiro.dev/docs/cli/code-intelligence/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el) feature integrates Language Server Protocol (LSP) into Kiro CLI to enable semantic understanding of your codebase for the Kiro agent. This can be a useful tool that will help Kiro as it works in troubleshooting.
 
 ---
 

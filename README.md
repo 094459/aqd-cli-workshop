@@ -20,7 +20,7 @@ To many folk though, using the command line can be daunting, for many reasons. F
 
 If only we could get some help with this.
 
-[Kiro CLI](https://kiro.dev/download?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) brings IDE-style autocomplete and agentic capabilities to your terminal. It features:
+[Kiro CLI](https://kiro.dev/download?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el) brings IDE-style autocomplete and agentic capabilities to your terminal. It features:
 
 * Auto Completion: IDE-style completions to hundreds of popular CLIs like git, npm, docker, and aws.
 * Natural Language Chat: Interact with your terminal using natural language to ask questions, debug issues, or explore the codebase.

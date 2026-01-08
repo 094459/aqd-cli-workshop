@@ -53,4 +53,4 @@ The MCP security model in Amazon Q Developer CLI is designed with these principl
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Kiro MCP documentatin](https://kiro.dev/docs/cli/mcp/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Kiro MCP documentatin](https://kiro.dev/docs/cli/mcp/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)

@@ -432,11 +432,11 @@ It will take 4-5 minutes to run some commands (to install libraries and dependen
 
 ---
 
-Kiro CLI provides [Language Server Protocols](https://kiro.dev/docs/cli/code-intelligence/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) that allow it to have a better understanding of code within your project. In this next lab we are going to see how easy it is to enable this. Once enabled, you will be able to  search symbols, find references, navigate definitions, rename across files, and get diagnostics through natural language queries.
+Kiro CLI provides [Language Server Protocols](https://kiro.dev/docs/cli/code-intelligence/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el) that allow it to have a better understanding of code within your project. In this next lab we are going to see how easy it is to enable this. Once enabled, you will be able to  search symbols, find references, navigate definitions, rename across files, and get diagnostics through natural language queries.
 
 **Task-08**
 
-To use this feature we need to make sure that we have a suitable LSP installed. Looking at the [Kiro documentation](https://kiro.dev/docs/cli/code-intelligence/#installing-language-servers?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) we can see that we need to install pyright on our system.
+To use this feature we need to make sure that we have a suitable LSP installed. Looking at the [Kiro documentation](https://kiro.dev/docs/cli/code-intelligence/#installing-language-servers?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el) we can see that we need to install pyright on our system.
 
 Exit your current Kiro CLI session, and from the terminal run the following command:
 

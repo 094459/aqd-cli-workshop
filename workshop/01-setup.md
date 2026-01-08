@@ -38,12 +38,12 @@ To install Kiro CLI on Windows, you will need to use Windows Subsystem for Linux
 
 **MacOS**
 
-To install Kiro CLI on MacOS, [follow the instructions on the Kiro.dev documentation site](https://kiro.dev/docs/cli/installation/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el#macos)
+To install Kiro CLI on MacOS, [follow the instructions on the Kiro.dev documentation site](https://kiro.dev/docs/cli/installation/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el#macos)
 
 
 **Linux options**
 
-To install Kiro CLI on Linux, [follow the instructions on the Kiro.dev documentation site](https://kiro.dev/docs/cli/installation/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el#linux-appimage). This covers Ubuntu and other distributions you might be using.
+To install Kiro CLI on Linux, [follow the instructions on the Kiro.dev documentation site](https://kiro.dev/docs/cli/installation/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el#linux-appimage). This covers Ubuntu and other distributions you might be using.
 
 ---
 
@@ -187,9 +187,9 @@ This allows me to simply type "k" to access Kiro, or "kh" to list my chat histor
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Official Kiro documentation on kiro.dev](https://kiro.dev/docs/cli/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Official Kiro documentation on kiro.dev](https://kiro.dev/docs/cli/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
-* [Upgrading from Amazon Q CLI to Kiro](https://kiro.dev/docs/cli/migrating-from-q/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Upgrading from Amazon Q CLI to Kiro](https://kiro.dev/docs/cli/migrating-from-q/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
 ---
 

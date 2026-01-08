@@ -22,7 +22,7 @@ Don't worry too much at this stage though, you do not need to do anything yet. I
 
 ### Using Kiro CLI behind a Proxy
 
-If you are running Kiro CLI behind a proxy, you should check out the [official Kiro documentation](https://kiro.dev/docs/cli/installation/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) that provides details on how you can configure this.
+If you are running Kiro CLI behind a proxy, you should check out the [official Kiro documentation](https://kiro.dev/docs/cli/installation/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el) that provides details on how you can configure this.
 
 ---
 
@@ -166,7 +166,7 @@ If you want to disable this at any time, just run the same command but use "fals
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Kiro CLI Experimental features](https://kiro.dev/docs/cli/experimental/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Kiro CLI Experimental features](https://kiro.dev/docs/cli/experimental/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
 
 ---

@@ -321,7 +321,7 @@ You can also set this two other ways:
 * when you start your Kiro CLI session, providing an argument in the format of **"kiro-cli chat --model <model-name>"**
 * configure the default model in your Kiro CLI settings file
 
-You can check out the [kiro docs](https://kiro.dev/docs/cli/chat/model-selection/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el) to see the available models to you, as well as get some additional info about how to choose a model.
+You can check out the [kiro docs](https://kiro.dev/docs/cli/chat/model-selection/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el) to see the available models to you, as well as get some additional info about how to choose a model.
 
 For many tasks, leaving the default Auto is a good choice.
 
@@ -528,7 +528,7 @@ You will notice that we have one tool that is automatically trusted - **introspe
 The number of tools that appears will change based on a number of factors:
 
 * whether you have configured any Kiro CLI experimental features [(see the advanced setup for more details about that)](/workshop/02-advanced-setup-topics.md)
-* new features introduced by Kiro CLI updates (for example, v1.21.0 added web_fetch and web_search) - the best source of know what available tools exist is [the built in tools reference pages](https://kiro.dev/docs/cli/reference/built-in-tools/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* new features introduced by Kiro CLI updates (for example, v1.21.0 added web_fetch and web_search) - the best source of know what available tools exist is [the built in tools reference pages](https://kiro.dev/docs/cli/reference/built-in-tools/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 * the number of Model Context Protocol (MCP) servers you configure - each MCP server will have it's own tools (don;t worry if you are not sure what MCP servers are, we will explore those in a bit)
 
 
@@ -1902,13 +1902,13 @@ usage.
 
 Some additional reading material that dives deeper into this topic if you want to explore:
 
-* [Kiro.dev](https://kiro.dev/docs/cli/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Kiro.dev](https://kiro.dev/docs/cli/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
-* [Kiro Steering documents](https://kiro.dev/docs/cli/steering/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Kiro Steering documents](https://kiro.dev/docs/cli/steering/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
-* [Kiro Context Management](https://kiro.dev/docs/cli/chat/context/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Kiro Context Management](https://kiro.dev/docs/cli/chat/context/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
-* [Kiro custom agent examples](https://kiro.dev/docs/cli/custom-agents/examples/?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el)
+* [Kiro custom agent examples](https://kiro.dev/docs/cli/custom-agents/examples/?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el)
 
 ### Completed!
 

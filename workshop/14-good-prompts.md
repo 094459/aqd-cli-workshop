@@ -107,7 +107,7 @@ The following provides some practical information that you might find helpful in
 
 **Meta-Prompting**
 
-**Meta Prompting** is where you ask the AI Coding Assistant (or any other LLM) to refine or improve your Prompt.This is a highly effective technique, and my colleague Dennis Traub has written about this in his post, [AI-Powered Prompt Engineering: Create the Perfect Prompt - Every Single Time!](https://community.aws/content/2hVZaVgpovhzdi5ijY12ZKDPGBc/ai-powered-prompt-engineering-create-the-perfect-prompyt-every-single-time?trk=fd6bb27a-13b0-4286-8269-c7b1cfaa29f0&sc_channel=el). Apply this approach to validate and test your Prompts.
+**Meta Prompting** is where you ask the AI Coding Assistant (or any other LLM) to refine or improve your Prompt.This is a highly effective technique, and my colleague Dennis Traub has written about this in his post, [AI-Powered Prompt Engineering: Create the Perfect Prompt - Every Single Time!](https://community.aws/content/2hVZaVgpovhzdi5ijY12ZKDPGBc/ai-powered-prompt-engineering-create-the-perfect-prompyt-every-single-time?trk=71546b8e-c969-4ead-aa9f-9cd06f6d8610&sc_channel=el). Apply this approach to validate and test your Prompts.
 
 This technique is also useful for generating variants of your Prompts. When you are uncertain about the optimal phrasing of your Prompt, you can request multiple versions of the prompt. For example, put your prompt in a markdown document and then use something like "Provide three alternative prompts for the Prompt in xxxx.". You can also switch to using different Models (for example, switching between Sonnet 3.5, 3.7 and 4.0 which Kiro CLI allows you to do) to see if you get different (improved) output.
 
