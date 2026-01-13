@@ -1067,6 +1067,7 @@ Some additional reading material that dives deeper into this topic if you want t
 
 * Check out [AWSome Reviewers website](https://awesomereviewers.com/reviewers/) which contains hundreds of curated prompts that are specifically focused to using AI coding assistants for reviewing your code
 
+* Read [From Solo Developer to AI-Powered Team](https://medium.com/@tomasmihalyi/from-solo-developer-to-ai-powered-team-46346a7cc438) which shows you how you can use custom agents and steering files to help you find gaps as you review projects
 ---
 
 ### Completed!
